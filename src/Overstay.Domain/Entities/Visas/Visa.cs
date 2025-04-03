@@ -1,9 +1,8 @@
 using Overstay.Domain.Constants;
-using Overstay.Domain.Entities.Bases;
 
 namespace Overstay.Domain.Entities.Visas;
 
-public class Visa : EntityBase
+public class Visa : Entity
 {
     public DateTime ArrivalDate { get; }
     public DateTime ExpireDate { get; private set; }

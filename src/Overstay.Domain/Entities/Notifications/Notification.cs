@@ -1,8 +1,6 @@
-using Overstay.Domain.Entities.Bases;
-
 namespace Overstay.Domain.Entities.Notifications;
 
-public class Notification : EntityBase 
+public class Notification : Entity
 {
     public bool EmailNotification { get; set; }
     public bool SmsNotification { get; set; }

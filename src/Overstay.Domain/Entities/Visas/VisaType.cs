@@ -1,8 +1,6 @@
-using Overstay.Domain.Entities.Bases;
-
 namespace Overstay.Domain.Entities.Visas;
 
-public class VisaType : EntityBase
+public class VisaType : Entity
 {
     public string? Name { get; set; }
     public string? Description { get; set; }
