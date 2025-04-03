@@ -24,6 +24,7 @@ out/
 *.userosscache
 *.sln.docstates
 *.DS_Store
+**/appsettings.Development.json
 
 # Logs
 *.log

@@ -11,6 +11,11 @@ public class VisaTypeConfigurations : IEntityTypeConfiguration<VisaType>
         builder.ToTable("VisaTypes");
 
         builder.HasKey(v => v.Id);
+        builder
+            .HasMany(v => v.Visas)
+            .WithOne(v => v.VisaType)
+            .HasForeignKey(v => v.VisaTypeId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder.Property(v => v.Id).ValueGeneratedOnAdd().HasColumnName("Id").IsRequired();
         builder.Property(v => v.CreatedAt).ValueGeneratedOnAdd().HasColumnName("CreatedAt");

@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Overstay.Domain.Entities.Notifications;
+using Overstay.Domain.Entities.Users;
 
 namespace Overstay.Infrastructure.Configurations;
 
@@ -11,6 +12,11 @@ public class NotificationConfigurations : IEntityTypeConfiguration<Notification>
         builder.ToTable("Notifications");
 
         builder.HasKey(n => n.Id);
+        builder
+            .HasOne(n => n.User)
+            .WithOne(u => u.Notification)
+            .HasForeignKey<User>(u => u.NotificationId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder.Property(n => n.Id).ValueGeneratedOnAdd().HasColumnName("Id").IsRequired();
         builder.Property(n => n.CreatedAt).ValueGeneratedOnAdd().HasColumnName("CreatedAt");

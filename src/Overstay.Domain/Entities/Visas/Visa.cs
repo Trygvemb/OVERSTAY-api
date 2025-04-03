@@ -1,14 +1,22 @@
 using Overstay.Domain.Constants;
+using Overstay.Domain.Entities.Users;
 
 namespace Overstay.Domain.Entities.Visas;
 
 public class Visa : Entity
 {
+    #region Fields, ForeignKeys, Navigation Properties
     public DateTime ArrivalDate { get; }
     public DateTime ExpireDate { get; private set; }
 
     public Guid VisaTypeId { get; set; }
-    public VisaType VisaType { get; }
+    public Guid UserId { get; set; }
+
+    public virtual VisaType VisaType { get; } = null!;
+    public virtual User User { get; set; } = null!;
+    #endregion
+
+    public Visa() { }
 
     public Visa(DateTime? arrivalDate, DateTime? expireDate, VisaType type)
     {

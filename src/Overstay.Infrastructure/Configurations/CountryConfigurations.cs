@@ -11,6 +11,11 @@ public class CountryConfigurations : IEntityTypeConfiguration<Country>
         builder.ToTable("Countries");
 
         builder.HasKey(c => c.Id);
+        builder
+            .HasMany(c => c.Users)
+            .WithOne(u => u.Country)
+            .HasForeignKey(u => u.CountryId)
+            .OnDelete(DeleteBehavior.NoAction);
 
         builder.Property(c => c.Id).ValueGeneratedOnAdd().HasColumnName("Id").IsRequired();
         builder.Property(c => c.CreatedAt).ValueGeneratedOnAdd().HasColumnName("CreatedAt");
