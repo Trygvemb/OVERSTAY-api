@@ -6,10 +6,9 @@ public class Visa : Entity
 {
     public DateTime ArrivalDate { get; }
     public DateTime ExpireDate { get; private set; }
-    public VisaType VisaType { get; }
 
-    /// Navigation properties
     public Guid VisaTypeId { get; set; }
+    public VisaType VisaType { get; }
 
     public Visa(DateTime? arrivalDate, DateTime? expireDate, VisaType type)
     {

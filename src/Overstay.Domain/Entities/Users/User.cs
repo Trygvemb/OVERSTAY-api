@@ -6,18 +6,27 @@ namespace Overstay.Domain.Entities.Users;
 
 public class User : Entity
 {
+    #region Fields
     public PersonName PersonName { get; }
     public Email Email { get; }
     public Password Password { get; }
     public UserName UserName { get; }
     public DateTime? DateOfBirth { get; set; }
+    #endregion
 
-    /// Navigation properties
-    public Country Nationality { get; set; }
+    #region Foreign keys
     public Guid CountryId { get; set; }
-    public Notification Notification { get; set; }
     public Guid NotificationId { get; set; }
-    public IList<Visa>? Visas { get; set; }
+    #endregion
+
+    #region Navigation properties
+    public Country Nationality { get; set; }
+    public Notification Notification { get; set; }
+    public ICollection<Visa>? Visas { get; set; } = new HashSet<Visa>();
+    #endregion
+
+    #region Constructors
+    protected User() { }
 
     public User(
         PersonName personName,
@@ -36,4 +45,5 @@ public class User : Entity
             password ?? throw new ArgumentNullException(nameof(password), "Password is required.");
         DateOfBirth = dateOfBirth;
     }
+    #endregion
 }
