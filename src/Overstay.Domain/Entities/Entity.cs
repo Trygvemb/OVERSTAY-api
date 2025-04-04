@@ -4,9 +4,7 @@ namespace Overstay.Domain.Entities;
 
 public class Entity
 {
-    public Guid Id { get; set; } = Guid.NewGuid();
-    public DateTime CreatedAt { get; set; } =
-        TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, Constant.ThailandTimezoneId);
-    public DateTime UpdatedAt { get; set; } =
-        TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, Constant.ThailandTimezoneId);
+    public Guid Id { get; init; }
+    public DateTime CreatedAt { get; init; } //= TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, Constant.ThailandTimezoneId);
+    public DateTime UpdatedAt { get; init; } //= TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, Constant.ThailandTimezoneId);
 }

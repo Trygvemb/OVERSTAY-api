@@ -1,17 +1,10 @@
-using Microsoft.EntityFrameworkCore;
-using Overstay.Infrastructure.Configurations;
 using Overstay.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOpenApi();
 
-#region Data Access Layer
-var dbOptions = builder.Configuration.GetSection(nameof(DatabaseOptions)).Get<DatabaseOptions>();
-var dbConnectionString = dbOptions?.ConnectionString;
-
-builder.Services.AddDataAccessLayer(dbConnectionString!);
-#endregion
+builder.Services.AddInfrastructureLayer(builder.Configuration);
 
 var app = builder.Build();
 
@@ -19,6 +12,16 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
+
+builder
+    .Configuration.SetBasePath(builder.Environment.ContentRootPath)
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile(
+        $"appsettings.{builder.Environment.EnvironmentName}.json",
+        optional: true,
+        reloadOnChange: true
+    )
+    .AddEnvironmentVariables();
 
 app.UseHttpsRedirection();
 

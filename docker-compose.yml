@@ -1,0 +1,15 @@
+services:
+  mssql:
+    image: vibs2006/sql_server_fts:latest
+    container_name: mssql_server
+    ports:
+      - "1433:1433" # Maps the host's port 1433 to the container's port 1433
+    environment:
+      SA_PASSWORD: "Password123!"
+      ACCEPT_EULA: "Y"                     # Accept the SQL Server EULA
+    volumes:
+      - mssql_data:/var/opt/mssql          # Persist data on a named volume
+    restart: unless-stopped
+
+volumes:
+  mssql_data:
