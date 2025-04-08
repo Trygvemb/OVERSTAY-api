@@ -11,14 +11,15 @@ namespace Overstay.UnitTest.Domain.Entities
         public void Should_Create_Valid_User()
         {
             var user = new User(
-                new PersonName("John", "Doe"),
+                "John",
+                "Doe",
                 new Email("test@example.com"),
                 new UserName("johndoe"),
                 new Password("SecurePassword123")
             );
 
-            user.PersonName.FirstName.ShouldBe("John");
-            user.PersonName.LastName.ShouldBe("Doe");
+            user.FirstName.ShouldBe("John");
+            user.LastName.ShouldBe("Doe");
             user.Email.Value.ShouldBe("test@example.com");
             user.UserName.Value.ShouldBe("johndoe");
             user.Password.Value.ShouldBe("SecurePassword123");
@@ -40,20 +41,6 @@ namespace Overstay.UnitTest.Domain.Entities
         public void Should_Throw_Exception_For_Invalid_UserName()
         {
             Should.Throw<ArgumentException>(() => new UserName("ab"));
-        }
-
-        [Fact]
-        public void Should_Throw_Exception_For_Empty_Name()
-        {
-            Should.Throw<ArgumentNullException>(
-                () =>
-                    new User(
-                        null,
-                        new Email("test@example.com"),
-                        new UserName("johndoe"),
-                        new Password("SecurePassword123")
-                    )
-            );
         }
     }
 }

@@ -11,8 +11,9 @@ public class User : Entity
 {
     #region Fields, ForeignKeys, Navigation Properties
 
-    public PersonName? PersonName { get; }
-    public Email? Email { get; }
+    public string? FirstName { get; set; }
+    public string? LastName { get; set; }
+    public Email? Email { get; set; }
     public Password? Password { get; }
     public UserName? UserName { get; }
 
@@ -26,10 +27,16 @@ public class User : Entity
 
     protected User() { }
 
-    public User(PersonName personName, Email email, UserName userName, Password password)
+    public User(
+        string firstname,
+        string lastName,
+        Email email,
+        UserName userName,
+        Password password
+    )
     {
-        PersonName =
-            personName ?? throw new ArgumentNullException(nameof(personName), "Name is required.");
+        FirstName = firstname;
+        LastName = lastName;
         Email = email ?? throw new ArgumentNullException(nameof(email), "Email is required.");
         UserName =
             userName ?? throw new ArgumentNullException(nameof(userName), "UserName is required.");

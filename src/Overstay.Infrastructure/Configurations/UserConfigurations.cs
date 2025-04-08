@@ -36,22 +36,9 @@ public class UserConfigurations : IEntityTypeConfiguration<User>
         builder.Property(u => u.Id).ValueGeneratedOnAdd().HasColumnName("Id").IsRequired();
         builder.Property(u => u.CreatedAt).ValueGeneratedOnAdd().HasColumnName("CreatedAt");
         builder.Property(u => u.UpdatedAt).ValueGeneratedOnAddOrUpdate().HasColumnName("UpdatedAt");
-
-        // Owned types configuration
-        builder.OwnsOne(
-            u => u.PersonName,
-            pn =>
-            {
-                pn.Property(x => x.FirstName)
-                    .HasColumnName("FirstName")
-                    .IsRequired()
-                    .HasMaxLength(100);
-                pn.Property(x => x.LastName)
-                    .HasColumnName("LastName")
-                    .IsRequired()
-                    .HasMaxLength(100);
-            }
-        );
+        builder.Property(u => u.CountryId).HasColumnName("CountryId");
+        builder.Property(u => u.FirstName).HasColumnName("Firstname");
+        builder.Property(u => u.LastName).HasColumnName("Lastname");
 
         builder.OwnsOne(
             u => u.Email,
