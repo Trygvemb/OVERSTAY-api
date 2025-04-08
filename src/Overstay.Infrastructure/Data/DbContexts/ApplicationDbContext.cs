@@ -37,7 +37,7 @@ public class ApplicationDbContext : DbContext
         // Apply configurations
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
         ConfigureEntityDefaults(modelBuilder);
-        SeedData(modelBuilder);
+        //SeedData(modelBuilder);
     }
 
     private void ConfigureEntityDefaults(ModelBuilder modelBuilder)

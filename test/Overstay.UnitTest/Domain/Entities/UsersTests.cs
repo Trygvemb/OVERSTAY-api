@@ -14,8 +14,7 @@ namespace Overstay.UnitTest.Domain.Entities
                 new PersonName("John", "Doe"),
                 new Email("test@example.com"),
                 new UserName("johndoe"),
-                new Password("SecurePassword123"),
-                new DateTime(1990, 1, 1)
+                new Password("SecurePassword123")
             );
 
             user.PersonName.FirstName.ShouldBe("John");
@@ -23,7 +22,6 @@ namespace Overstay.UnitTest.Domain.Entities
             user.Email.Value.ShouldBe("test@example.com");
             user.UserName.Value.ShouldBe("johndoe");
             user.Password.Value.ShouldBe("SecurePassword123");
-            user.DateOfBirth.ShouldBe(new DateTime(1990, 1, 1));
         }
 
         [Fact]
@@ -53,8 +51,7 @@ namespace Overstay.UnitTest.Domain.Entities
                         null,
                         new Email("test@example.com"),
                         new UserName("johndoe"),
-                        new Password("SecurePassword123"),
-                        new DateTime(1990, 1, 1)
+                        new Password("SecurePassword123")
                     )
             );
         }

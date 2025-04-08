@@ -11,30 +11,22 @@ public class User : Entity
 {
     #region Fields, ForeignKeys, Navigation Properties
 
-    public PersonName PersonName { get; }
-    public Email Email { get; }
-    public Password Password { get; }
-    public UserName UserName { get; }
-    public DateTime? DateOfBirth { get; set; }
+    public PersonName? PersonName { get; }
+    public Email? Email { get; }
+    public Password? Password { get; }
+    public UserName? UserName { get; }
 
-    public Guid CountryId { get; set; }
-    public Guid NotificationId { get; set; }
+    public Guid? CountryId { get; set; }
 
-    public virtual Country Country { get; set; }
-    public virtual Notification Notification { get; set; }
+    public virtual Country? Country { get; set; }
+    public virtual Notification? Notification { get; set; }
     public virtual ICollection<Visa>? Visas { get; set; } = new HashSet<Visa>();
 
     #endregion
 
     protected User() { }
 
-    public User(
-        PersonName personName,
-        Email email,
-        UserName userName,
-        Password password,
-        DateTime? dateOfBirth
-    )
+    public User(PersonName personName, Email email, UserName userName, Password password)
     {
         PersonName =
             personName ?? throw new ArgumentNullException(nameof(personName), "Name is required.");
@@ -43,6 +35,5 @@ public class User : Entity
             userName ?? throw new ArgumentNullException(nameof(userName), "UserName is required.");
         Password =
             password ?? throw new ArgumentNullException(nameof(password), "Password is required.");
-        DateOfBirth = dateOfBirth;
     }
 }

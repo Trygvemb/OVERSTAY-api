@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Overstay.Domain.Entities.Notifications;
 using Overstay.Domain.Entities.Users;
 
 namespace Overstay.Infrastructure.Configurations;
@@ -16,7 +17,7 @@ public class UserConfigurations : IEntityTypeConfiguration<User>
         builder
             .HasOne(u => u.Notification)
             .WithOne(n => n.User)
-            .HasForeignKey<User>(u => u.NotificationId)
+            .HasForeignKey<Notification>(n => n.UserId)
             .OnDelete(DeleteBehavior.Cascade);
 
         builder
@@ -35,7 +36,6 @@ public class UserConfigurations : IEntityTypeConfiguration<User>
         builder.Property(u => u.Id).ValueGeneratedOnAdd().HasColumnName("Id").IsRequired();
         builder.Property(u => u.CreatedAt).ValueGeneratedOnAdd().HasColumnName("CreatedAt");
         builder.Property(u => u.UpdatedAt).ValueGeneratedOnAddOrUpdate().HasColumnName("UpdatedAt");
-        builder.Property(u => u.DateOfBirth).HasColumnName("DateOfBirth");
 
         // Owned types configuration
         builder.OwnsOne(
