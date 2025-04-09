@@ -1,8 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
-using Overstay.Infrastructure.Configurations;
 
 namespace Overstay.Infrastructure.Data.DbContexts;
 
@@ -34,11 +32,6 @@ public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<Applicatio
                     .EnableRetryOnFailure(5, TimeSpan.FromSeconds(30), null)
         );
 
-        // Create SeedConfigurations options
-        var seedConfigurations = new SeedConfigurations();
-        configuration.GetSection("SeedData").Bind(seedConfigurations);
-        var seedOptions = Options.Create(seedConfigurations);
-
-        return new ApplicationDbContext(optionsBuilder.Options, seedOptions);
+        return new ApplicationDbContext(optionsBuilder.Options);
     }
 }

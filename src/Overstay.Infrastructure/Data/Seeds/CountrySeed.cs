@@ -8,11 +8,14 @@ public static class CountrySeed
     /// <summary>
     /// Seeds the database with predefined country data.
     /// </summary>
-    /// <param name="modelBuilder">
+    /// <param name="modelBuilder"></param>
+    /// <param name="countries"></param>
     /// An instance of <see cref="ModelBuilder"/> used to configure and build the database schema.
-    /// </param>
-    public static void SeedCountries(ModelBuilder modelBuilder)
+    public static void SeedCountries(ModelBuilder modelBuilder, DbSet<Country> countries)
     {
+        if (countries.Any())
+            return;
+
         modelBuilder
             .Entity<Country>()
             .HasData(

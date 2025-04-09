@@ -8,11 +8,14 @@ public static class VisaTypeSeed
     /// <summary>
     /// Seeds the initial set of visa types into the database.
     /// </summary>
-    /// <param name="modelBuilder">
+    /// <param name="modelBuilder"></param>
+    /// <param name="visaTypes"></param>
     /// The <see cref="ModelBuilder"/> used to configure the entity framework model and seed data.
-    /// </param>
-    public static void SeedVisaTypes(ModelBuilder modelBuilder)
+    public static void SeedVisaTypes(ModelBuilder modelBuilder, DbSet<VisaType> visaTypes)
     {
+        if (visaTypes.Any())
+            return;
+
         modelBuilder
             .Entity<VisaType>()
             .HasData(
