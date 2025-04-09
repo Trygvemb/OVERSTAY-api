@@ -13,11 +13,11 @@ public class User : Entity
 
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
-    public Email? Email { get; set; }
-    public Password? Password { get; }
-    public UserName? UserName { get; }
+    public Email Email { get; private set; }
+    public Password Password { get; private set; }
+    public UserName UserName { get; private set; }
 
-    public Guid? CountryId { get; set; }
+    public Guid? CountryId { get; private set; }
 
     public virtual Country? Country { get; set; }
     public virtual Notification? Notification { get; set; }

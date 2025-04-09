@@ -1,12 +1,14 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Overstay.Infrastructure.Configurations;
 using Overstay.Infrastructure.Data.DbContexts;
+using Overstay.Infrastructure.Data.Identities;
 
-namespace Overstay.Infrastructure.Extensions;
+namespace Overstay.Infrastructure;
 
-public static class DiExtension
+public static class ServiceCollectionExtension
 {
     /// <summary>
     /// Adds the infrastructure layer services to the service collection, including database context
@@ -33,7 +35,7 @@ public static class DiExtension
                 }
             )
         );
-
+        
         return services;
     }
 }

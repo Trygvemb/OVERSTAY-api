@@ -1,4 +1,6 @@
-using Overstay.Infrastructure.Extensions;
+using Overstay.Infrastructure;
+using Overstay.Infrastructure.Data.DbContexts;
+using Overstay.Infrastructure.Data.Identities;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,6 +8,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenApi();
 
 builder.Services.AddInfrastructureLayer(builder.Configuration);
+builder.Services.AddAuthorization();
+builder.Services.AddIdentityApiEndpoints<ApplicationUser>()
+    .AddEntityFrameworkStores<ApplicationDbContext>();
 
 var app = builder.Build();
 
@@ -26,5 +31,7 @@ builder
     .AddEnvironmentVariables();
 
 app.UseHttpsRedirection();
+
+app.MapIdentityApi<ApplicationUser>();
 
 app.Run();
