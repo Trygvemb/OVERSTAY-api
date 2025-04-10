@@ -1,9 +1,4 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-using Overstay.Domain.Entities.Countries;
-using Overstay.Domain.Entities.Notifications;
-using Overstay.Domain.Entities.Users;
-using Overstay.Domain.Entities.Visas;
 using Overstay.Infrastructure.Configurations;
 using Overstay.Infrastructure.Data.Identities;
 

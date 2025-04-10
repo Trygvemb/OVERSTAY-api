@@ -1,7 +1,4 @@
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Overstay.Domain.Entities.Notifications;
-using Overstay.Domain.Entities.Users;
 
 namespace Overstay.Infrastructure.Configurations;
 

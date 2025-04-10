@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Identity;
-using Overstay.Domain.Entities.Users;
 
 namespace Overstay.Infrastructure.Data.Identities;
 

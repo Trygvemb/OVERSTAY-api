@@ -23,4 +23,8 @@
       <ProjectReference Include="..\..\src\Overstay.Domain\Overstay.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Domain\Entities\" />
+    </ItemGroup>
+
 </Project>

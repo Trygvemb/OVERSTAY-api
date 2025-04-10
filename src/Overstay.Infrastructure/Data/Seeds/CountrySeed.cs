@@ -1,6 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-using Overstay.Domain.Entities.Countries;
-
 namespace Overstay.Infrastructure.Data.Seeds;
 
 public static class CountrySeed

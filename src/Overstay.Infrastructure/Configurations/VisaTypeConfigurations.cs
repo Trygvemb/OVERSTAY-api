@@ -1,6 +1,4 @@
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Overstay.Domain.Entities.Visas;
 
 namespace Overstay.Infrastructure.Configurations;
 
