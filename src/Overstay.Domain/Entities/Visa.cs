@@ -1,7 +1,6 @@
 using Overstay.Domain.Constants;
-using Overstay.Domain.Entities.Users;
 
-namespace Overstay.Domain.Entities.Visas;
+namespace Overstay.Domain.Entities;
 
 /// <summary>
 /// Represents a visa entity within the domain.
@@ -10,7 +9,6 @@ namespace Overstay.Domain.Entities.Visas;
 /// </summary>
 public class Visa : Entity
 {
-    #region Fields, ForeignKeys, Navigation Properties
     public DateTime ArrivalDate { get; }
     public DateTime ExpireDate { get; private set; }
 
@@ -19,7 +17,6 @@ public class Visa : Entity
 
     public virtual VisaType VisaType { get; } = null!;
     public virtual User User { get; set; } = null!;
-    #endregion
 
     public Visa() { }
 

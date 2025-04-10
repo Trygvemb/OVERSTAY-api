@@ -39,29 +39,5 @@ public class UserConfigurations : IEntityTypeConfiguration<User>
         builder.Property(u => u.CountryId).HasColumnName("CountryId");
         builder.Property(u => u.FirstName).HasColumnName("Firstname");
         builder.Property(u => u.LastName).HasColumnName("Lastname");
-
-        builder.OwnsOne(
-            u => u.Email,
-            e =>
-            {
-                e.Property(x => x.Value).HasColumnName("Email").IsRequired().HasMaxLength(100);
-            }
-        );
-
-        builder.OwnsOne(
-            u => u.UserName,
-            un =>
-            {
-                un.Property(x => x.Value).HasColumnName("UserName").IsRequired().HasMaxLength(100);
-            }
-        );
-
-        builder.OwnsOne(
-            u => u.Password,
-            p =>
-            {
-                p.Property(x => x.Value).HasColumnName("Password").IsRequired().HasMaxLength(100);
-            }
-        );
     }
 }

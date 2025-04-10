@@ -1,5 +1,3 @@
-using Overstay.Domain.Constants;
-
 namespace Overstay.Domain.Entities;
 
 /// <summary>

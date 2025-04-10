@@ -1,1 +1,1 @@
-using Ilogger = Serilog.ILogger;
+global using Serilog;

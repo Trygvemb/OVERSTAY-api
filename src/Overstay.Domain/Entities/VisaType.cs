@@ -1,4 +1,4 @@
-namespace Overstay.Domain.Entities.Visas;
+namespace Overstay.Domain.Entities;
 
 /// <summary>
 /// Represents a visa type within the domain.
@@ -12,6 +12,5 @@ public class VisaType : Entity
     public int DurationInDays { get; set; }
     public bool IsMultipleEntry { get; set; }
 
-    // Navigation property
     public virtual ICollection<Visa> Visas { get; set; } = new HashSet<Visa>();
 }
