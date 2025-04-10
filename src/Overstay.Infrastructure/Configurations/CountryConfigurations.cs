@@ -10,7 +10,7 @@ public class CountryConfigurations : IEntityTypeConfiguration<Country>
 
         builder.HasKey(c => c.Id);
         builder
-            .HasMany(c => c.Users)
+            .HasMany<User>()
             .WithOne(u => u.Country)
             .HasForeignKey(u => u.CountryId)
             .OnDelete(DeleteBehavior.NoAction);

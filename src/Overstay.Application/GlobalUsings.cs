@@ -1,1 +1,1 @@
-global using Serilog;
+global using Overstay.Domain.Entities;

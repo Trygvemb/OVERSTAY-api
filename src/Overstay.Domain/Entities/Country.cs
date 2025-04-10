@@ -6,7 +6,6 @@ namespace Overstay.Domain.Entities;
 /// </summary>
 public class Country : Entity
 {
-    public string Name { get; init; } = string.Empty;
-    public string IsoCode { get; init; } = string.Empty;
-    public virtual ICollection<User> Users { get; set; } = new HashSet<User>();
+    public required string Name { get; init; }
+    public required string IsoCode { get; init; }
 }

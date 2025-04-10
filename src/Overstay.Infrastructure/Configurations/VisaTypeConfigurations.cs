@@ -10,7 +10,7 @@ public class VisaTypeConfigurations : IEntityTypeConfiguration<VisaType>
 
         builder.HasKey(v => v.Id);
         builder
-            .HasMany(v => v.Visas)
+            .HasMany<Visa>()
             .WithOne(v => v.VisaType)
             .HasForeignKey(v => v.VisaTypeId)
             .OnDelete(DeleteBehavior.Cascade);

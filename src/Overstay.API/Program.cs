@@ -1,3 +1,5 @@
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Overstay.Application;
 using Overstay.Infrastructure;
 using Overstay.Infrastructure.Data.DbContexts;
 using Overstay.Infrastructure.Data.Identities;
@@ -7,10 +9,20 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOpenApi();
 
-builder.Services.AddInfrastructureLayer(builder.Configuration);
-builder.Services.AddAuthorization();
-builder.Services.AddIdentityApiEndpoints<ApplicationUser>()
+builder.Services
+    .AddInfrastructureLayer(builder.Configuration)
+    .AddApplicationLayer();
+
+builder.Services
+    .AddAuthorization()
+    .AddIdentityApiEndpoints<ApplicationUser>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
+
+builder.Logging
+    .ClearProviders()
+    .AddConsole()
+    .AddDebug()
+    .SetMinimumLevel(LogLevel.Information);
 
 var app = builder.Build();
 

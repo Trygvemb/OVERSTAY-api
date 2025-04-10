@@ -15,10 +15,10 @@ public class Visa : Entity
     public Guid VisaTypeId { get; set; }
     public Guid UserId { get; set; }
 
-    public virtual VisaType VisaType { get; } = null!;
-    public virtual User User { get; set; } = null!;
+    public VisaType VisaType { get; } = null!;
+    public User User { get; set; } = null!;
 
-    public Visa() { }
+    protected Visa() { }
 
     public Visa(DateTime? arrivalDate, DateTime? expireDate, VisaType type)
     {

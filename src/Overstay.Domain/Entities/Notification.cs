@@ -10,5 +10,7 @@ public class Notification : Entity
     public bool SmsNotification { get; set; }
     public bool PushNotification { get; set; }
     public required Guid UserId { get; set; }
-    public virtual User User { get; init; } = null!;
+    public User User { get; init; } = null!;
+    
+    protected Notification() { }
 }

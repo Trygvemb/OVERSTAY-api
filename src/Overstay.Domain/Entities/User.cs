@@ -10,9 +10,9 @@ public class User : Entity
 
     public Guid? CountryId { get; private set; }
 
-    public virtual Country? Country { get; set; }
-    public virtual Notification? Notification { get; set; }
-    public virtual ICollection<Visa>? Visas { get; set; } = new HashSet<Visa>();
+    public Country? Country { get; set; }
+    public Notification? Notification { get; set; }
+    public ICollection<Visa>? Visas { get; set; } = new HashSet<Visa>();
 
     protected User() { }
 

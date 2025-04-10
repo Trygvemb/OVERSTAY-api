@@ -19,7 +19,7 @@ public class UserConfigurations : IEntityTypeConfiguration<User>
 
         builder
             .HasOne(u => u.Country)
-            .WithMany(c => c.Users)
+            .WithMany()
             .HasForeignKey(u => u.CountryId)
             .OnDelete(DeleteBehavior.NoAction);
 
