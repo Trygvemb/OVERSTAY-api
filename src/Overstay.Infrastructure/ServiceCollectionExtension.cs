@@ -2,9 +2,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Overstay.Application.Services;
 using Overstay.Infrastructure.Configurations;
 using Overstay.Infrastructure.Data.DbContexts;
 using Overstay.Infrastructure.Data.Identities;
+using Overstay.Infrastructure.Services;
 
 namespace Overstay.Infrastructure;
 
@@ -35,6 +37,8 @@ public static class ServiceCollectionExtension
                 }
             )
         );
+        
+        services.AddScoped<IVisaTypeService, VisaTypeService>();
         
         return services;
     }

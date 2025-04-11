@@ -7,7 +7,9 @@ using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddOpenApi();
+builder.Services
+    .AddOpenApi()
+    .AddControllers();
 
 builder.Services
     .AddInfrastructureLayer(builder.Configuration)
@@ -42,8 +44,11 @@ builder
     )
     .AddEnvironmentVariables();
 
-app.UseHttpsRedirection();
+app.UseHttpsRedirection()
+    .UseAuthentication()
+    .UseAuthorization();
 
+app.MapControllers();
 app.MapIdentityApi<ApplicationUser>();
 
 app.Run();
