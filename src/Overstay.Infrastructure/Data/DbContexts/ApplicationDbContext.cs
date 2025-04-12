@@ -1,10 +1,11 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Overstay.Infrastructure.Configurations;
 using Overstay.Infrastructure.Data.Identities;
 
 namespace Overstay.Infrastructure.Data.DbContexts;
 
-public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>
 {
     public new DbSet<User> Users { get; set; }
     public DbSet<Country> Countries { get; set; }

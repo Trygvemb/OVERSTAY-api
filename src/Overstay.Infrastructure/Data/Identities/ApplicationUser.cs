@@ -2,8 +2,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Overstay.Infrastructure.Data.Identities;
 
-public class ApplicationUser : IdentityUser
+public class ApplicationUser : IdentityUser<Guid>
 {
-    public Guid DomainUserId { get; init; }
-    public User DomainUser { get; init; } = null!;
+    public required User DomainUser { get; init; }
 }

@@ -7,17 +7,10 @@ public class ApplicationUserConfiguration : IEntityTypeConfiguration<Application
 {
     public void Configure(EntityTypeBuilder<ApplicationUser> builder)
     {
-        // Rename the Identity table
-        builder.ToTable("ApplicationUser");
-        
         builder
-            .HasOne(u => u.DomainUser)
-            .WithOne() // Explicitly state it's one-to-one without navigation property
-            .HasForeignKey<ApplicationUser>(u => u.DomainUserId)
+            .HasOne(a => a.DomainUser)
+            .WithOne()
+            .HasForeignKey<User>(u => u.Id)
             .OnDelete(DeleteBehavior.Cascade);
-
-        builder
-            .HasIndex(u => u.DomainUserId)
-            .IsUnique();
     }
 }
