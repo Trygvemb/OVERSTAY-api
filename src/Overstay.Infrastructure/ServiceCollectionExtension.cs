@@ -37,9 +37,9 @@ public static class ServiceCollectionExtension
                 }
             )
         );
-        
+
         services.AddScoped<IVisaTypeService, VisaTypeService>();
-        
+
         return services;
     }
 }

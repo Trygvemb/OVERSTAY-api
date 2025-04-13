@@ -16,10 +16,7 @@ public class User : Entity
 
     protected User() { }
 
-    public User(
-        string firstname,
-        string lastName
-    )
+    public User(string firstname, string lastName)
     {
         FirstName = firstname;
         LastName = lastName;

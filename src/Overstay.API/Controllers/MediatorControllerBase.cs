@@ -1,6 +1,6 @@
-using Microsoft.AspNetCore.Mvc;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Overstay.API.Controllers;
 
@@ -9,5 +9,5 @@ namespace Overstay.API.Controllers;
 [Route("api/[controller]")]
 public class MediatorControllerBase(ISender mediator) : ControllerBase
 {
-    protected ISender Mediator { get; } = mediator; 
+    protected ISender Mediator { get; } = mediator;
 }

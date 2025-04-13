@@ -1,4 +1,3 @@
-
 namespace Overstay.Infrastructure.Configurations;
 
 public class DefaultConfigurations

@@ -5,10 +5,17 @@ namespace Overstay.Application.Features.VisaTypes.Commands;
 
 public record UpdateVisaTypeCommand(VisaType VisaType) : IRequest<Result>;
 
-public class UpdateVisaTypeCommandHandler(IVisaTypeService visaTypeService) : IRequestHandler<UpdateVisaTypeCommand, Result>
+public class UpdateVisaTypeCommandHandler(IVisaTypeService visaTypeService)
+    : IRequestHandler<UpdateVisaTypeCommand, Result>
 {
-    public async Task<Result> Handle(UpdateVisaTypeCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(
+        UpdateVisaTypeCommand request,
+        CancellationToken cancellationToken
+    )
     {
-        return await visaTypeService.UpdateAsync(visaType: request.VisaType, cancellationToken: cancellationToken);
+        return await visaTypeService.UpdateAsync(
+            visaType: request.VisaType,
+            cancellationToken: cancellationToken
+        );
     }
 }

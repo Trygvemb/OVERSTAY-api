@@ -11,6 +11,6 @@ public class Notification : Entity
     public bool PushNotification { get; set; }
     public required Guid UserId { get; set; }
     public User User { get; init; } = null!;
-    
+
     protected Notification() { }
 }

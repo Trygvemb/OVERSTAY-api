@@ -1,2 +1,2 @@
-global using Overstay.Domain.Entities;
 global using Microsoft.EntityFrameworkCore;
+global using Overstay.Domain.Entities;

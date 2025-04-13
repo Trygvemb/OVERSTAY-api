@@ -10,7 +10,7 @@ public static class VisaTypeSeed
 {
     // Extract constant prefixes for better readability
     private const string VisaTypeIdPrefix = "10000000-0000-0000-0000-0000000000";
-    
+
     /// <summary>
     /// Seeds the initial set of visa types into the database.
     /// </summary>
@@ -21,9 +21,7 @@ public static class VisaTypeSeed
         if (visaTypes.Any())
             return;
 
-        modelBuilder
-            .Entity<VisaType>()
-            .HasData(GetPredefinedVisaTypes());
+        modelBuilder.Entity<VisaType>().HasData(GetPredefinedVisaTypes());
     }
 
     /// <summary>
@@ -37,11 +35,21 @@ public static class VisaTypeSeed
             {
                 Id = new Guid($"{VisaTypeIdPrefix}01"),
             },
-            new VisaType("Test Business Visa", "For business meetings and commercial activities", 180, true)
+            new VisaType(
+                "Test Business Visa",
+                "For business meetings and commercial activities",
+                180,
+                true
+            )
             {
                 Id = new Guid($"{VisaTypeIdPrefix}02"),
             },
-            new VisaType("Test Student Visa", "For full-time students enrolled in educational institutions", 365, true)
+            new VisaType(
+                "Test Student Visa",
+                "For full-time students enrolled in educational institutions",
+                365,
+                true
+            )
             {
                 Id = new Guid($"{VisaTypeIdPrefix}03"),
             },
@@ -49,14 +57,24 @@ public static class VisaTypeSeed
             {
                 Id = new Guid($"{VisaTypeIdPrefix}04"),
             },
-            new VisaType("Test Transit Visa", "For passing through a country to reach another destination", 7, false)
+            new VisaType(
+                "Test Transit Visa",
+                "For passing through a country to reach another destination",
+                7,
+                false
+            )
             {
                 Id = new Guid($"{VisaTypeIdPrefix}05"),
             },
-            new VisaType("Test Diplomatic Visa", "For diplomatic and official government visits", 180, true)
+            new VisaType(
+                "Test Diplomatic Visa",
+                "For diplomatic and official government visits",
+                180,
+                true
+            )
             {
                 Id = new Guid($"{VisaTypeIdPrefix}06"),
-            }
+            },
         };
     }
 }

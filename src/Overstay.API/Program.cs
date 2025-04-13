@@ -7,24 +7,16 @@ using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services
-    .AddOpenApi()
-    .AddControllers();
+builder.Services.AddOpenApi().AddControllers();
 
-builder.Services
-    .AddInfrastructureLayer(builder.Configuration)
-    .AddApplicationLayer();
+builder.Services.AddInfrastructureLayer(builder.Configuration).AddApplicationLayer();
 
-builder.Services
-    .AddAuthorization()
+builder
+    .Services.AddAuthorization()
     .AddIdentityApiEndpoints<ApplicationUser>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
-builder.Logging
-    .ClearProviders()
-    .AddConsole()
-    .AddDebug()
-    .SetMinimumLevel(LogLevel.Information);
+builder.Logging.ClearProviders().AddConsole().AddDebug().SetMinimumLevel(LogLevel.Information);
 
 var app = builder.Build();
 
@@ -44,9 +36,7 @@ builder
     )
     .AddEnvironmentVariables();
 
-app.UseHttpsRedirection()
-    .UseAuthentication()
-    .UseAuthorization();
+app.UseHttpsRedirection().UseAuthentication().UseAuthorization();
 
 app.MapControllers();
 app.MapIdentityApi<ApplicationUser>();
