@@ -1,4 +1,4 @@
-using Overstay.Application.Commons.Errors;
+using Overstay.Application.Commons.Constants;
 
 namespace Overstay.Application.Commons.Results;
 

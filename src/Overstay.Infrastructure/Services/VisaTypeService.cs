@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Logging;
-using Overstay.Application.Commons.Errors;
+using Overstay.Application.Commons.Constants;
 using Overstay.Application.Commons.Results;
 using Overstay.Application.Services;
 using Overstay.Infrastructure.Data.DbContexts;
@@ -19,7 +19,7 @@ public class VisaTypeService(ApplicationDbContext context, ILogger<VisaTypeServi
         catch (Exception ex)
         {
             logger.LogError(ex, "Error occurred while retrieving all visa types");
-            return Result.Failure<List<VisaType>>(VisaTypeErrors.ServerError);
+            return Result.Failure<List<VisaType>>(Error.ServerError);
         }
     }
 
@@ -38,7 +38,7 @@ public class VisaTypeService(ApplicationDbContext context, ILogger<VisaTypeServi
         catch (Exception ex)
         {
             logger.LogError(ex, "Error occurred while retrieving visa type with ID {Id}", id);
-            return Result.Failure<VisaType>(VisaTypeErrors.ServerError);
+            return Result.Failure<VisaType>(Error.ServerError);
         }
     }
 
@@ -58,7 +58,7 @@ public class VisaTypeService(ApplicationDbContext context, ILogger<VisaTypeServi
         catch (Exception ex)
         {
             logger.LogError(ex, "Error occurred while creating visa type");
-            return Result.Failure<Guid>(VisaTypeErrors.ServerError);
+            return Result.Failure<Guid>(Error.ServerError);
             ;
         }
     }
@@ -101,7 +101,7 @@ public class VisaTypeService(ApplicationDbContext context, ILogger<VisaTypeServi
                 "Error occurred while updating visa type with ID {Id}",
                 visaType.Id
             );
-            return Result.Failure(VisaTypeErrors.ServerError);
+            return Result.Failure(Error.ServerError);
         }
     }
 
@@ -126,7 +126,7 @@ public class VisaTypeService(ApplicationDbContext context, ILogger<VisaTypeServi
         catch (Exception ex)
         {
             logger.LogError(ex, "Error occurred while deleting visa type with ID {Id}", id);
-            return Result.Failure(VisaTypeErrors.ServerError);
+            return Result.Failure(Error.ServerError);
         }
     }
 }

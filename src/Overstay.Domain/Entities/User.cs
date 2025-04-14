@@ -5,9 +5,6 @@ namespace Overstay.Domain.Entities;
 /// </summary>
 public class User : Entity
 {
-    public string? FirstName { get; set; }
-    public string? LastName { get; set; }
-
     public Guid? CountryId { get; private set; }
 
     public Country? Country { get; set; }
@@ -16,9 +13,5 @@ public class User : Entity
 
     protected User() { }
 
-    public User(string firstname, string lastName)
-    {
-        FirstName = firstname;
-        LastName = lastName;
-    }
+    public User(Guid countryId) { }
 }
