@@ -1,12 +1,22 @@
+using System.Text.Json.Serialization;
 using Overstay.Application;
+using Overstay.Application.Commons.JsonConverters;
 using Overstay.Infrastructure;
 using Overstay.Infrastructure.Data;
-using Overstay.Infrastructure.Data.Identities;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddOpenApi().AddControllers();
+builder
+    .Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+        options.JsonSerializerOptions.Converters.Add(new ResultJsonConverter());
+        options.JsonSerializerOptions.Converters.Add(new ResultJsonConverterFactory());
+    });
+
+builder.Services.AddOpenApi();
 
 builder.Services.AddInfrastructureLayer(builder.Configuration).AddApplicationLayer();
 
@@ -36,6 +46,5 @@ builder
 app.UseHttpsRedirection().UseAuthentication().UseAuthorization();
 
 app.MapControllers();
-app.MapIdentityApi<ApplicationUser>();
 
 app.Run();

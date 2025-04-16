@@ -1,4 +1,4 @@
-namespace Overstay.Application.Commons.Constants;
+namespace Overstay.Application.Commons.Errors;
 
 public static class VisaTypeErrors
 {

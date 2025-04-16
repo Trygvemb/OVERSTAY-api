@@ -16,4 +16,13 @@
       <ProjectReference Include="..\Overstay.Infrastructure\Overstay.Infrastructure.csproj" />
     </ItemGroup>
 
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <NoWarn>$(NoWarn);1591</NoWarn>  <!-- Suppress warning about missing XML comments -->
+    </PropertyGroup>
+
+
 </Project>

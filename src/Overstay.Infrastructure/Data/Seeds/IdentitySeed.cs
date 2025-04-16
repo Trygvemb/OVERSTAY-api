@@ -1,7 +1,7 @@
 using System;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Overstay.Application.Commons.Constants;
+using Overstay.Application.Commons.Errors;
 using Overstay.Domain.Entities;
 using Overstay.Infrastructure.Data.Identities;
 

@@ -1,7 +1,6 @@
-using System.Transactions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
-using Overstay.Application.Commons.Constants;
+using Overstay.Application.Commons.Errors;
 using Overstay.Application.Commons.Results;
 using Overstay.Application.Features.Users.Requests;
 using Overstay.Application.Features.Users.Responses;
@@ -109,7 +108,9 @@ public class UserService(
                 );
             }
 
-            return Result.Success(userWithRolesResponses);
+            return userWithRolesResponses.Count != 0
+                ? Result.Success(userWithRolesResponses)
+                : Result.Failure<List<UserWithRolesResponse>>(UserErrors.NotFound());
         }
         catch (Exception ex)
         {
@@ -183,53 +184,66 @@ public class UserService(
             return Result.Failure<Guid>(UserErrors.UserAlreadyExists);
         }
 
-        try
+        var strategy = context.Database.CreateExecutionStrategy();
+
+        // Using strategy to wrap the transaction in since EF Core is configured to use retry on failure
+        return await strategy.ExecuteAsync(async () =>
         {
-            using var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+            await using var transaction = await context.Database.BeginTransactionAsync(
+                cancellationToken
+            );
 
-            var applicationUser = new ApplicationUser
+            try
             {
-                Id = Guid.NewGuid(),
-                UserName = request.UserName,
-                Email = request.Email,
-            };
+                var applicationUser = new ApplicationUser
+                {
+                    Id = Guid.NewGuid(),
+                    UserName = request.UserName,
+                    Email = request.Email,
+                };
 
-            var identityResult = await userManager.CreateAsync(applicationUser, request.Password);
-            if (!identityResult.Succeeded)
-            {
-                return Result.Failure<Guid>(new Error(identityResult.Errors.First().Description));
+                var identityResult = await userManager.CreateAsync(
+                    applicationUser,
+                    request.Password
+                );
+                if (!identityResult.Succeeded)
+                {
+                    return Result.Failure<Guid>(
+                        new Error(identityResult.Errors.First().Description)
+                    );
+                }
+
+                await userManager.AddToRoleAsync(applicationUser, RoleTypeConstants.User);
+
+                var user = new User(countryId: request.CountryId) { Id = applicationUser.Id };
+
+                await context.AddAsync(user, cancellationToken);
+                await context.SaveChangesAsync(cancellationToken);
+
+                await transaction.CommitAsync(cancellationToken);
+                return Result.Success(applicationUser.Id);
             }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync(cancellationToken);
 
-            await userManager.AddToRoleAsync(applicationUser, RoleTypeConstants.User);
-            ;
-
-            var user = new User(countryId: request.CountryId) { Id = applicationUser.Id };
-
-            await context.AddAsync(user, cancellationToken);
-            await context.SaveChangesAsync(cancellationToken);
-
-            transaction.Complete();
-            return Result.Success(applicationUser.Id);
-        }
-        catch (Exception ex)
-        {
-            logger.LogError(ex, "Error creating user");
-            return Result.Failure<Guid>(UserErrors.FailedToCreateUser);
-        }
+                logger.LogError(ex, "Error creating user, rolling back transaction.");
+                return Result.Failure<Guid>(UserErrors.FailedToCreateUser);
+            }
+        });
     }
 
     public async Task<Result<UserResponse>> UpdateAsync(
-        Guid id,
         UpdateUserRequest request,
         CancellationToken cancellationToken
     )
     {
         try
         {
-            var applicationUser = await userManager.FindByIdAsync(id.ToString());
+            var applicationUser = await userManager.FindByIdAsync(request.Id.ToString());
             if (applicationUser is null)
             {
-                return Result.Failure<UserResponse>(UserErrors.NotFound(id.ToString()));
+                return Result.Failure<UserResponse>(UserErrors.NotFound(request.Id.ToString()));
             }
 
             applicationUser.UserName = request.UserName;
@@ -276,7 +290,7 @@ public class UserService(
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Error occurred while updating user with ID {UserId}", id);
+            logger.LogError(ex, "Error occurred while updating user with ID {UserId}", request.Id);
             return Result.Failure<UserResponse>(UserErrors.UpdateFailed());
         }
     }
@@ -362,7 +376,6 @@ public class UserService(
             if (user is null)
             {
                 return Result.Failure(UserErrors.NotFound(userId.ToString()));
-                ;
             }
 
             var isInRole = await userManager.IsInRoleAsync(user, roleName);
@@ -381,7 +394,6 @@ public class UserService(
                     userId,
                     result.Errors.First().Description
                 );
-                ;
 
                 return Result.Failure(UserErrors.UpdateFailed(result.Errors.First().Description));
             }

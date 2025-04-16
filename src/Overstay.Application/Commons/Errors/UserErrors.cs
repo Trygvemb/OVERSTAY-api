@@ -1,9 +1,9 @@
-namespace Overstay.Application.Commons.Constants;
+namespace Overstay.Application.Commons.Errors;
 
 public static class UserErrors
 {
-    public static Error NotFound(string identifier) =>
-        new(ErrorTypeConstants.NotFound, $"User with identifier '{identifier}' not found.");
+    public static Error NotFound(string? identifier = null) =>
+        new(ErrorTypeConstants.NotFound, $"{identifier} User not found.");
 
     public static Error ConcurrencyError =>
         new Error(

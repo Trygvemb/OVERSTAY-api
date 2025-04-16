@@ -16,11 +16,14 @@ public class VisaTypeController(ISender mediator) : MediatorControllerBase(media
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<Result<List<VisaType>>>> GetVisaTypes(
+    public async Task<ActionResult<List<VisaType>>> GetVisaTypes(
         CancellationToken cancellationToken
     )
     {
-        return await Mediator.Send(new GetVisaTypesQuery(), cancellationToken);
+        var result = await Mediator.Send(new GetVisaTypesQuery(), cancellationToken);
+        return result.IsSuccess
+            ? Ok(result.Value)
+            : StatusCode(GetStatusCode(result.Error.Code), result.Error);
     }
 
     [HttpGet("{id}")]
@@ -28,12 +31,15 @@ public class VisaTypeController(ISender mediator) : MediatorControllerBase(media
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<Result<VisaType>>> GetVisaTypeById(
+    public async Task<ActionResult<VisaType>> GetVisaTypeById(
         Guid id,
         CancellationToken cancellationToken
     )
     {
-        return await Mediator.Send(new GetVisaTypeQuery(id), cancellationToken);
+        var result = await Mediator.Send(new GetVisaTypeQuery(id), cancellationToken);
+        return result.IsSuccess
+            ? Ok(result.Value)
+            : StatusCode(GetStatusCode(result.Error.Code), result.Error);
     }
 
     [HttpPost]
@@ -41,12 +47,13 @@ public class VisaTypeController(ISender mediator) : MediatorControllerBase(media
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<Result>> CreateVisaType(
+    public async Task<ActionResult> CreateVisaType(
         CreateVisaTypeCommand command,
         CancellationToken cancellationToken
     )
     {
-        return await Mediator.Send(command, cancellationToken);
+        var result = await Mediator.Send(command, cancellationToken);
+        return result.IsSuccess ? Ok() : StatusCode(GetStatusCode(result.Error.Code), result.Error);
     }
 
     [HttpPut("{id}")]
@@ -55,13 +62,14 @@ public class VisaTypeController(ISender mediator) : MediatorControllerBase(media
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<Result>> UpdateVisaType(
+    public async Task<ActionResult> UpdateVisaType(
         Guid id,
         UpdateVisaTypeCommand command,
         CancellationToken cancellationToken
     )
     {
-        return await Mediator.Send(command, cancellationToken);
+        var result = await Mediator.Send(command, cancellationToken);
+        return result.IsSuccess ? Ok() : StatusCode(GetStatusCode(result.Error.Code), result.Error);
     }
 
     [HttpDelete("{id}")]
@@ -69,11 +77,24 @@ public class VisaTypeController(ISender mediator) : MediatorControllerBase(media
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<Result>> DeleteVisaType(
-        Guid id,
-        CancellationToken cancellationToken
-    )
+    public async Task<ActionResult> DeleteVisaType(Guid id, CancellationToken cancellationToken)
     {
-        return await Mediator.Send(new DeleteVisaTypeCommand(id), cancellationToken);
+        var result = await Mediator.Send(new DeleteVisaTypeCommand(id), cancellationToken);
+        return result.IsSuccess
+            ? NoContent()
+            : StatusCode(GetStatusCode(result.Error.Code), result.Error);
     }
+
+    // protected int GetStatusCode(string errorCode)
+    // {
+    //     return errorCode switch
+    //     {
+    //         "NotFound" => StatusCodes.Status404NotFound,
+    //         "Validation" => StatusCodes.Status400BadRequest,
+    //         "Unauthorized" => StatusCodes.Status401Unauthorized,
+    //         "Forbidden" => StatusCodes.Status403Forbidden,
+    //         "Concurrency" => StatusCodes.Status409Conflict,
+    //         _ => StatusCodes.Status500InternalServerError,
+    //     };
+    // }
 }

@@ -3,7 +3,7 @@ using Overstay.Application.Services;
 
 namespace Overstay.Application.Features.VisaTypes.Queries;
 
-public record GetVisaTypesQuery : IRequest<Result<List<VisaType>>>;
+public sealed record GetVisaTypesQuery : IRequest<Result<List<VisaType>>>;
 
 public class GetVisaTypesCommandHandler(IVisaTypeService visaTypeService)
     : IRequestHandler<GetVisaTypesQuery, Result<List<VisaType>>>

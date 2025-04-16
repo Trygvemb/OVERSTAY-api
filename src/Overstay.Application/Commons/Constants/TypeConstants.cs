@@ -1,4 +1,4 @@
-namespace Overstay.Application.Commons.Constants;
+namespace Overstay.Application.Commons.Errors;
 
 public static class ErrorTypeConstants
 {
@@ -9,6 +9,7 @@ public static class ErrorTypeConstants
     public const string ServerError = "ServerError";
     public const string Unauthorized = "Unauthorized";
     public const string Forbidden = "Forbidden";
+    public const string InternalServerError = "InternalServerError";
 }
 
 public static class RoleTypeConstants

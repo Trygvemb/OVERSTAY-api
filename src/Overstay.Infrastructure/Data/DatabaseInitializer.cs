@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Overstay.Application.Commons.Constants;
+using Overstay.Application.Commons.Errors;
 using Overstay.Infrastructure.Data.DbContexts;
 using Overstay.Infrastructure.Data.Identities;
 
@@ -53,10 +53,8 @@ public static class DatabaseInitializer
         ApplicationDbContext context
     )
     {
-        // Current time as DateTime
         var now = DateTime.UtcNow;
 
-        // Check if admin user exists
         if (await userManager.FindByEmailAsync("admin@example.com") is null)
         {
             var ukCountryId = new Guid("00000000-0000-0000-0000-000000000183");
@@ -73,17 +71,10 @@ public static class DatabaseInitializer
                 [RoleTypeConstants.Admin, RoleTypeConstants.User]
             );
 
-            // Use the correct type for CreatedAt and UpdatedAt
-            var user = new User(ukCountryId)
-            {
-                Id = admin.Id,
-                // CreatedAt and UpdatedAt should be set automatically via your base entity
-            };
+            var user = new User(ukCountryId) { Id = admin.Id };
 
             await context.Users.AddAsync(user);
             await context.SaveChangesAsync();
         }
-
-        // Similar changes for regular user...
     }
 }

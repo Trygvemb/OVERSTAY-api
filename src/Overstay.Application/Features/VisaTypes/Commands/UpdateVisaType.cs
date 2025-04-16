@@ -3,7 +3,7 @@ using Overstay.Application.Services;
 
 namespace Overstay.Application.Features.VisaTypes.Commands;
 
-public record UpdateVisaTypeCommand(VisaType VisaType) : IRequest<Result>;
+public sealed record UpdateVisaTypeCommand(VisaType VisaType) : IRequest<Result>;
 
 public class UpdateVisaTypeCommandHandler(IVisaTypeService visaTypeService)
     : IRequestHandler<UpdateVisaTypeCommand, Result>

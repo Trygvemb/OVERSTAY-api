@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Logging;
-using Overstay.Application.Commons.Constants;
+using Overstay.Application.Commons.Errors;
 using Overstay.Application.Commons.Results;
 using Overstay.Application.Services;
 using Overstay.Infrastructure.Data.DbContexts;

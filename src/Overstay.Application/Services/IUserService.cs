@@ -9,22 +9,22 @@ public interface IUserService
     // Users section
     public Task<Result<TokenResponse>> SignInAsync(SignInUserRequest request);
     public Task<Result> SignOutAsync();
+    public Task<Result<Guid>> CreateAsync(
+        CreateUserRequest request,
+        CancellationToken cancellationToken
+    );
+    public Task<Result<UserResponse>> UpdateAsync(
+        UpdateUserRequest request,
+        CancellationToken cancellationToken
+    );
+    public Task<Result> DeleteAsync(Guid id);
+
     public Task<Result<List<UserWithRolesResponse>>> GetAllAsync(
         CancellationToken cancellationToken
     );
     public Task<Result<UserResponse>> GetByIdAsync(Guid id);
     public Task<Result<UserResponse>> GetByEmailAsync(string email);
     public Task<Result<UserResponse>> GetByUsernameAsync(string username);
-    public Task<Result<Guid>> CreateAsync(
-        CreateUserRequest request,
-        CancellationToken cancellationToken
-    );
-    public Task<Result<UserResponse>> UpdateAsync(
-        Guid id,
-        UpdateUserRequest request,
-        CancellationToken cancellationToken
-    );
-    public Task<Result> DeleteAsync(Guid id);
     public Task<Result<bool>> IsEmailUniqueAsync(string email);
     public Task<Result<bool>> IsUsernameUniqueAsync(string username);
 

@@ -3,7 +3,7 @@ using Overstay.Application.Services;
 
 namespace Overstay.Application.Features.VisaTypes.Commands;
 
-public record DeleteVisaTypeCommand(Guid Id) : IRequest<Result>;
+public sealed record DeleteVisaTypeCommand(Guid Id) : IRequest<Result>;
 
 public class DeleteVisaTypeCommandHandler(IVisaTypeService visaTypeService)
     : IRequestHandler<DeleteVisaTypeCommand, Result>
