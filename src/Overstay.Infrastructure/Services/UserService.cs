@@ -246,8 +246,8 @@ public class UserService(
                 return Result.Failure<UserResponse>(UserErrors.NotFound(request.Id.ToString()));
             }
 
-            applicationUser.UserName = request.UserName;
-            applicationUser.Email = request.Email;
+            applicationUser.Email = request.Email ?? applicationUser.Email;
+            applicationUser.UserName = request.UserName ?? applicationUser.UserName;
 
             var updateResult = await userManager.UpdateAsync(applicationUser);
             if (!updateResult.Succeeded)
