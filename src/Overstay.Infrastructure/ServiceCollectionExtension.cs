@@ -1,7 +1,10 @@
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using Overstay.Application.Services;
 using Overstay.Infrastructure.Configurations;
 using Overstay.Infrastructure.Data.DbContexts;
@@ -12,13 +15,6 @@ namespace Overstay.Infrastructure;
 
 public static class ServiceCollectionExtension
 {
-    /// <summary>
-    /// Adds the infrastructure layer services to the service collection, including database context
-    /// configuration for the application.
-    /// </summary>
-    /// <param name="services">The service collection to which the infrastructure layer services are added.</param>
-    /// <param name="configuration">The application configuration used to load database options.</param>
-    /// <returns>The updated service collection with the infrastructure layer services registered.</returns>
     public static IServiceCollection AddInfrastructureLayer(
         this IServiceCollection services,
         IConfiguration configuration
@@ -38,7 +34,47 @@ public static class ServiceCollectionExtension
             )
         );
 
+        services
+            .AddIdentity<ApplicationUser, IdentityRole<Guid>>(options =>
+            {
+                options.Password.RequiredLength = 8;
+                options.Password.RequireDigit = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequireLowercase = true;
+                options.User.RequireUniqueEmail = true;
+            })
+            .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddDefaultTokenProviders();
+
+        services
+            .AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = configuration["JwtSettings:Issuer"],
+                    ValidAudience = configuration["JwtSettings:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(
+                        Encoding.UTF8.GetBytes(
+                            configuration["JwtSettings:SecretKey"]
+                                ?? throw new InvalidOperationException()
+                        )
+                    ),
+                };
+            });
+
         services.AddScoped<IVisaTypeService, VisaTypeService>();
+        services.AddScoped<ITokenService, TokenService>();
+        services.AddScoped<IUserService, UserService>();
 
         return services;
     }

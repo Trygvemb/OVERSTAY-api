@@ -18,9 +18,6 @@ public static class VisaTypeSeed
     /// <param name="visaTypes">The DbSet of visa types to check if seeding is needed.</param>
     public static void SeedVisaTypes(ModelBuilder modelBuilder, DbSet<VisaType> visaTypes)
     {
-        if (visaTypes.Any())
-            return;
-
         modelBuilder.Entity<VisaType>().HasData(GetPredefinedVisaTypes());
     }
 

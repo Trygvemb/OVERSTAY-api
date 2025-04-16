@@ -1,4 +1,3 @@
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 
@@ -6,12 +5,6 @@ namespace Overstay.Infrastructure.Data.DbContexts;
 
 public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<ApplicationDbContext>
 {
-    /// <summary>
-    /// Creates a new instance of the <see cref="ApplicationDbContext"/> class utilizing
-    /// the specified design-time configuration settings.
-    /// </summary>
-    /// <param name="args">The arguments passed during the creation of the DbContext. Typically used for migrations or tooling.</param>
-    /// <returns>A configured instance of <see cref="ApplicationDbContext"/>.</returns>
     public ApplicationDbContext CreateDbContext(string[] args)
     {
         var configuration = new ConfigurationBuilder()

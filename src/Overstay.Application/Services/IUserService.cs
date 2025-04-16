@@ -7,7 +7,8 @@ namespace Overstay.Application.Services;
 public interface IUserService
 {
     // Users section
-    public Task<Result> SignInAsync(SignInUserRequest request);
+    public Task<Result<TokenResponse>> SignInAsync(SignInUserRequest request);
+    public Task<Result> SignOutAsync();
     public Task<Result<List<UserWithRolesResponse>>> GetAllAsync(
         CancellationToken cancellationToken
     );

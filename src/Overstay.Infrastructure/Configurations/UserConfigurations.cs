@@ -10,7 +10,6 @@ public class UserConfigurations : IEntityTypeConfiguration<User>
 
         builder.HasKey(u => u.Id);
 
-        // Navigation properties configuration
         builder
             .HasOne(u => u.Notification)
             .WithOne(n => n.User)
@@ -21,7 +20,8 @@ public class UserConfigurations : IEntityTypeConfiguration<User>
             .HasOne(u => u.Country)
             .WithMany()
             .HasForeignKey(u => u.CountryId)
-            .OnDelete(DeleteBehavior.NoAction);
+            .IsRequired(false)
+            .OnDelete(DeleteBehavior.SetNull);
 
         builder
             .HasMany(u => u.Visas)
@@ -34,7 +34,5 @@ public class UserConfigurations : IEntityTypeConfiguration<User>
         builder.Property(u => u.CreatedAt).ValueGeneratedOnAdd().HasColumnName("CreatedAt");
         builder.Property(u => u.UpdatedAt).ValueGeneratedOnAddOrUpdate().HasColumnName("UpdatedAt");
         builder.Property(u => u.CountryId).HasColumnName("CountryId");
-        builder.Property(u => u.FirstName).HasColumnName("Firstname");
-        builder.Property(u => u.LastName).HasColumnName("Lastname");
     }
 }

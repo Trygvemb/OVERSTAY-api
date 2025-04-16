@@ -15,10 +15,11 @@ public class UserService(
     ApplicationDbContext context,
     UserManager<ApplicationUser> userManager,
     SignInManager<ApplicationUser> signInManager,
+    ITokenService tokenService,
     ILogger<UserService> logger
 ) : IUserService
 {
-    public async Task<Result> SignInAsync(SignInUserRequest request)
+    public async Task<Result<TokenResponse>> SignInAsync(SignInUserRequest request)
     {
         try
         {
@@ -26,7 +27,7 @@ public class UserService(
             if (user is null)
             {
                 logger.LogWarning("User with username {Username} not found", request.UserName);
-                return Result.Failure(UserErrors.NotFound(request.UserName));
+                return Result.Failure<TokenResponse>(UserErrors.NotFound(request.UserName));
             }
 
             var signInResult = await signInManager.PasswordSignInAsync(
@@ -40,13 +41,24 @@ public class UserService(
             {
                 logger.LogWarning("Failed to sign in user {Username}", request.UserName);
 
-                return Result.Failure(
+                return Result.Failure<TokenResponse>(
                     signInResult.IsLockedOut ? UserErrors.LockedOut : UserErrors.InvalidCredentials
                 );
             }
 
+            var roles = await userManager.GetRolesAsync(user);
+            var userInfo = new UserWithRolesResponse
+            {
+                Id = user.Id,
+                UserName = user.UserName!,
+                Email = user.Email!,
+                Roles = roles.ToList(),
+            };
+
+            var tokenResponse = await tokenService.GenerateJwtToken(userInfo);
+
             logger.LogInformation("User {Username} signed in successfully", request.UserName);
-            return Result.Success();
+            return Result.Success(tokenResponse);
         }
         catch (Exception ex)
         {
@@ -55,7 +67,21 @@ public class UserService(
                 "Error occurred while signing in user {Username}",
                 request.UserName
             );
-            return Result.Failure(UserErrors.SignInFailed);
+            return Result.Failure<TokenResponse>(UserErrors.SignInFailed);
+        }
+    }
+
+    public async Task<Result> SignOutAsync()
+    {
+        try
+        {
+            await signInManager.SignOutAsync();
+            return Result.Success();
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Error SigningOut");
+            return Result.Failure(Error.ServerError);
         }
     }
 

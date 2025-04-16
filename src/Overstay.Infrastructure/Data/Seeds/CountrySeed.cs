@@ -10,9 +10,6 @@ public static class CountrySeed
     /// An instance of <see cref="ModelBuilder"/> used to configure and build the database schema.
     public static void SeedCountries(ModelBuilder modelBuilder, DbSet<Country> countries)
     {
-        if (countries.Any())
-            return;
-
         modelBuilder
             .Entity<Country>()
             .HasData(
