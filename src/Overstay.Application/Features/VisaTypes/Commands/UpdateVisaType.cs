@@ -1,9 +1,10 @@
 using Overstay.Application.Commons.Results;
+using Overstay.Application.Features.VisaTypes.Request;
 using Overstay.Application.Services;
 
 namespace Overstay.Application.Features.VisaTypes.Commands;
 
-public sealed record UpdateVisaTypeCommand(VisaType VisaType) : IRequest<Result>;
+public sealed record UpdateVisaTypeCommand(Guid Id, UpdateVisaTypeRequest Item) : IRequest<Result>;
 
 public class UpdateVisaTypeCommandHandler(IVisaTypeService visaTypeService)
     : IRequestHandler<UpdateVisaTypeCommand, Result>
@@ -13,9 +14,8 @@ public class UpdateVisaTypeCommandHandler(IVisaTypeService visaTypeService)
         CancellationToken cancellationToken
     )
     {
-        return await visaTypeService.UpdateAsync(
-            visaType: request.VisaType,
-            cancellationToken: cancellationToken
-        );
+        var visaType = request.Adapt<VisaType>();
+
+        return await visaTypeService.UpdateAsync(visaType, cancellationToken: cancellationToken);
     }
 }

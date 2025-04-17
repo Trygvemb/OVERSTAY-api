@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Overstay.Application.Commons.Errors;
+using Overstay.Application.Commons.Constants;
 using Overstay.Infrastructure.Data.DbContexts;
 using Overstay.Infrastructure.Data.Identities;
 

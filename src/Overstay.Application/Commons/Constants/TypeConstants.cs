@@ -1,4 +1,4 @@
-namespace Overstay.Application.Commons.Errors;
+namespace Overstay.Application.Commons.Constants;
 
 public static class ErrorTypeConstants
 {

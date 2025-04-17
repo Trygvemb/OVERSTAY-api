@@ -1,13 +1,17 @@
+using MapsterMapper;
 using Microsoft.Extensions.Logging;
-using Overstay.Application.Commons.Errors;
+using Overstay.Application.Commons.Constants;
 using Overstay.Application.Commons.Results;
 using Overstay.Application.Services;
 using Overstay.Infrastructure.Data.DbContexts;
 
 namespace Overstay.Infrastructure.Services;
 
-public class VisaTypeService(ApplicationDbContext context, ILogger<VisaTypeService> logger)
-    : IVisaTypeService
+public class VisaTypeService(
+    ApplicationDbContext context,
+    ILogger<VisaTypeService> logger,
+    IMapper mapper
+) : IVisaTypeService
 {
     public async Task<Result<List<VisaType>>> GetAllAsync(CancellationToken cancellationToken)
     {
@@ -59,7 +63,6 @@ public class VisaTypeService(ApplicationDbContext context, ILogger<VisaTypeServi
         {
             logger.LogError(ex, "Error occurred while creating visa type");
             return Result.Failure<Guid>(Error.ServerError);
-            ;
         }
     }
 
@@ -78,7 +81,9 @@ public class VisaTypeService(ApplicationDbContext context, ILogger<VisaTypeServi
                 return Result.Failure(VisaTypeErrors.NotFound(visaType.Id));
             }
 
-            context.VisaTypes.Update(visaType);
+            mapper.Map(visaType, existingVisaType);
+
+            context.VisaTypes.Update(existingVisaType);
             await context.SaveChangesAsync(cancellationToken);
 
             logger.LogInformation("Updated visa type with ID {Id}", visaType.Id);
@@ -92,7 +97,6 @@ public class VisaTypeService(ApplicationDbContext context, ILogger<VisaTypeServi
                 visaType.Id
             );
             return Result.Failure(VisaTypeErrors.ConcurrencyError);
-            ;
         }
         catch (Exception ex)
         {

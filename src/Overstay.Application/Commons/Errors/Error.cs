@@ -1,6 +1,6 @@
 using Overstay.Application.Commons.Results;
 
-namespace Overstay.Application.Commons.Errors;
+namespace Overstay.Application.Commons.Constants;
 
 public sealed record Error(string Code, string? Message = null)
 {

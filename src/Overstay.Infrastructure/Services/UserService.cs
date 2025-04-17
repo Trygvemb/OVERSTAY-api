@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
-using Overstay.Application.Commons.Errors;
+using Overstay.Application.Commons.Constants;
 using Overstay.Application.Commons.Results;
 using Overstay.Application.Features.Users.Requests;
 using Overstay.Application.Features.Users.Responses;
@@ -234,16 +234,17 @@ public class UserService(
     }
 
     public async Task<Result<UserResponse>> UpdateAsync(
+        Guid id,
         UpdateUserRequest request,
         CancellationToken cancellationToken
     )
     {
         try
         {
-            var applicationUser = await userManager.FindByIdAsync(request.Id.ToString());
+            var applicationUser = await userManager.FindByIdAsync(id.ToString());
             if (applicationUser is null)
             {
-                return Result.Failure<UserResponse>(UserErrors.NotFound(request.Id.ToString()));
+                return Result.Failure<UserResponse>(UserErrors.NotFound(id.ToString()));
             }
 
             applicationUser.Email = request.Email ?? applicationUser.Email;
@@ -290,7 +291,7 @@ public class UserService(
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Error occurred while updating user with ID {UserId}", request.Id);
+            logger.LogError(ex, "Error occurred while updating user with ID {UserId}", id);
             return Result.Failure<UserResponse>(UserErrors.UpdateFailed());
         }
     }

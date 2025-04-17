@@ -1,17 +1,18 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Overstay.Application.Commons.Constants;
 using Overstay.Application.Commons.Results;
 using Overstay.Application.Features.Users.Commands;
 using Overstay.Application.Features.Users.Queries;
-using Overstay.Application.Features.Users.Responses;
+using Overstay.Application.Features.Users.Requests;
 using Overstay.Application.Features.VisaTypes.Commands;
 
 namespace Overstay.API.Controllers;
 
-[AllowAnonymous]
 public class UserController(ISender mediator) : MediatorControllerBase(mediator)
 {
+    [AllowAnonymous]
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -32,6 +33,7 @@ public class UserController(ISender mediator) : MediatorControllerBase(mediator)
         return CreatedAtAction(nameof(GetById), new { id = userId }, userId);
     }
 
+    [AllowAnonymous]
     [HttpPost("sign-in")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -64,17 +66,18 @@ public class UserController(ISender mediator) : MediatorControllerBase(mediator)
             : StatusCode(GetStatusCode(result.Error.Code), result.Error);
     }
 
-    [HttpPut]
+    [HttpPut("{id:Guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> UpdateUser(
-        UpdateUserCommand command,
+        Guid id,
+        UpdateUserRequest request,
         CancellationToken cancellationToken
     )
     {
-        var result = await Mediator.Send(command, cancellationToken);
+        var result = await Mediator.Send(new UpdateUserCommand(id, request), cancellationToken);
 
         return result.IsSuccess
             ? Ok(result)

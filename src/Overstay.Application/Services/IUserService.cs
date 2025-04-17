@@ -14,6 +14,7 @@ public interface IUserService
         CancellationToken cancellationToken
     );
     public Task<Result<UserResponse>> UpdateAsync(
+        Guid id,
         UpdateUserRequest request,
         CancellationToken cancellationToken
     );

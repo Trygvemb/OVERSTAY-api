@@ -1,34 +1,18 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Overstay.Application.Commons.Errors;
-using Overstay.Application.Commons.Results;
+using Overstay.Application.Commons.Constants;
 
 namespace Overstay.API.Controllers;
 
-//[Authorize]
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class MediatorControllerBase(ISender mediator) : ControllerBase
 {
     protected ISender Mediator { get; } = mediator;
 
-    protected ActionResult<Result> HandleResult<T>(Result<T> result)
-    {
-        return result.IsSuccess ? Ok(result) : StatusCode(GetStatusCode(result.Error.Code), result);
-    }
-
-    protected ActionResult<Result> HandleResult(Result result)
-    {
-        return result.IsSuccess ? Ok() : StatusCode(GetStatusCode(result.Error.Code), result);
-    }
-
-    protected ActionResult<Result<T>> HandleResultWithResponse<T>(Result<T> result)
-    {
-        return result.IsSuccess ? Ok(result) : StatusCode(GetStatusCode(result.Error.Code), result);
-    }
-
-    protected int GetStatusCode(string errorCode)
+    protected static int GetStatusCode(string errorCode)
     {
         return errorCode switch
         {
@@ -40,16 +24,4 @@ public class MediatorControllerBase(ISender mediator) : ControllerBase
             _ => StatusCodes.Status500InternalServerError,
         };
     }
-    // protected int GetStatusCode(string errorCode)
-    // {
-    //     return errorCode switch
-    //     {
-    //         "NotFound" => StatusCodes.Status404NotFound,
-    //         "Validation" => StatusCodes.Status400BadRequest,
-    //         "Unauthorized" => StatusCodes.Status401Unauthorized,
-    //         "Forbidden" => StatusCodes.Status403Forbidden,
-    //         "Concurrency" => StatusCodes.Status409Conflict,
-    //         _ => StatusCodes.Status500InternalServerError,
-    //     };
-    // }
 }

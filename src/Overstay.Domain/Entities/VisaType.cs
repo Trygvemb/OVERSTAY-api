@@ -12,7 +12,7 @@ public class VisaType : Entity
     public int DurationInDays { get; private set; }
     public bool IsMultipleEntry { get; private set; }
 
-    protected VisaType() { }
+    public VisaType() { }
 
     public VisaType(string name, string description, int durationInDays, bool isMultipleEntry)
     {
