@@ -1,5 +1,5 @@
+using MapsterMapper;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Logging;
 using Overstay.Application.Commons.Constants;
 using Overstay.Application.Commons.Results;
 using Overstay.Application.Features.Users.Requests;
@@ -15,7 +15,8 @@ public class UserService(
     UserManager<ApplicationUser> userManager,
     SignInManager<ApplicationUser> signInManager,
     ITokenService tokenService,
-    ILogger<UserService> logger
+    ILogger<UserService> logger,
+    IMapper mapper
 ) : IUserService
 {
     public async Task<Result<TokenResponse>> SignInAsync(SignInUserRequest request)
@@ -75,6 +76,8 @@ public class UserService(
         try
         {
             await signInManager.SignOutAsync();
+
+            logger.LogInformation("User signed out successfully");
             return Result.Success();
         }
         catch (Exception ex)
@@ -233,7 +236,7 @@ public class UserService(
         });
     }
 
-    public async Task<Result<UserResponse>> UpdateAsync(
+    public async Task<Result> UpdateAsync(
         Guid id,
         UpdateUserRequest request,
         CancellationToken cancellationToken
@@ -247,12 +250,12 @@ public class UserService(
                 return Result.Failure<UserResponse>(UserErrors.NotFound(id.ToString()));
             }
 
-            applicationUser.Email = request.Email ?? applicationUser.Email;
-            applicationUser.UserName = request.UserName ?? applicationUser.UserName;
+            mapper.Map(request, applicationUser);
 
             var updateResult = await userManager.UpdateAsync(applicationUser);
             if (!updateResult.Succeeded)
             {
+                logger.LogWarning("failed to update user {id}:", id);
                 return Result.Failure<UserResponse>(
                     UserErrors.UpdateFailed(updateResult.Errors.First().Description)
                 );
@@ -263,6 +266,7 @@ public class UserService(
                 var removePasswordResult = await userManager.RemovePasswordAsync(applicationUser);
                 if (!removePasswordResult.Succeeded)
                 {
+                    logger.LogWarning("failed to remove password:");
                     return Result.Failure<UserResponse>(
                         UserErrors.UpdateFailed(updateResult.Errors.First().Description)
                     );
@@ -274,10 +278,13 @@ public class UserService(
                 );
                 if (!addPasswordResult.Succeeded)
                 {
+                    logger.LogWarning("failed to add password:");
                     return Result.Failure<UserResponse>(
                         UserErrors.UpdateFailed(updateResult.Errors.First().Description)
                     );
                 }
+
+                logger.LogInformation("Password updated successfully");
             }
 
             var response = new UserResponse

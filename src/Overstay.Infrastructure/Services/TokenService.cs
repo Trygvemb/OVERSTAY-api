@@ -1,4 +1,3 @@
-// In Infrastructure layer
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -9,10 +8,13 @@ using Overstay.Application.Services;
 
 namespace Overstay.Infrastructure.Services;
 
-public class TokenService(IConfiguration configuration) : ITokenService
+public class TokenService(IConfiguration configuration, ILogger<TokenService> logger)
+    : ITokenService
 {
     public Task<TokenResponse> GenerateJwtToken(UserWithRolesResponse user)
     {
+        logger.LogInformation("Generating JWT token for user {UserId}", user.Id);
+
         var claims = new List<Claim>
         {
             new(ClaimTypes.NameIdentifier, user.Id.ToString()),
@@ -21,6 +23,7 @@ public class TokenService(IConfiguration configuration) : ITokenService
         };
 
         claims.AddRange(user.Roles.Select(role => new Claim(ClaimTypes.Role, role)));
+        logger.LogDebug("Added {ClaimsCount} claims to token", claims.Count);
 
         var key = new SymmetricSecurityKey(
             Encoding.UTF8.GetBytes(
@@ -47,11 +50,14 @@ public class TokenService(IConfiguration configuration) : ITokenService
             ExpiresAt = expires,
         };
 
+        logger.LogInformation("Successfully generated JWT token for user {UserId}", user.Id);
         return Task.FromResult(tokenResponse);
     }
 
     public bool ValidateToken(string token)
     {
+        logger.LogInformation("Validating JWT token");
+
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.ASCII.GetBytes(
             configuration["JwtSettings:SecretKey"] ?? throw new InvalidOperationException()
@@ -74,10 +80,12 @@ public class TokenService(IConfiguration configuration) : ITokenService
                 out _
             );
 
+            logger.LogInformation("JWT token validation successful");
             return true;
         }
-        catch
+        catch (Exception ex)
         {
+            logger.LogWarning(ex, "JWT token validation failed");
             return false;
         }
     }

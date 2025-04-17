@@ -13,7 +13,7 @@ public interface IUserService
         CreateUserRequest request,
         CancellationToken cancellationToken
     );
-    public Task<Result<UserResponse>> UpdateAsync(
+    public Task<Result> UpdateAsync(
         Guid id,
         UpdateUserRequest request,
         CancellationToken cancellationToken

@@ -6,14 +6,16 @@ using Overstay.Application.Commons.Results;
 using Overstay.Application.Features.Users.Commands;
 using Overstay.Application.Features.Users.Queries;
 using Overstay.Application.Features.Users.Requests;
+using Overstay.Application.Features.Users.Responses;
 using Overstay.Application.Features.VisaTypes.Commands;
+using Overstay.Infrastructure.Data.Identities;
 
 namespace Overstay.API.Controllers;
 
 public class UserController(ISender mediator) : MediatorControllerBase(mediator)
 {
-    [AllowAnonymous]
     [HttpPost]
+    [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -33,13 +35,13 @@ public class UserController(ISender mediator) : MediatorControllerBase(mediator)
         return CreatedAtAction(nameof(GetById), new { id = userId }, userId);
     }
 
-    [AllowAnonymous]
     [HttpPost("sign-in")]
+    [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult> SignInUser(
+    public async Task<ActionResult<TokenResponse>> SignInUser(
         SigInUserCommand command,
         CancellationToken cancellationToken
     )
@@ -67,9 +69,10 @@ public class UserController(ISender mediator) : MediatorControllerBase(mediator)
     }
 
     [HttpPut("{id:Guid}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [SameUserOrAdminAuthorize]
+    [ProducesResponseType(typeof(UserResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> UpdateUser(
         Guid id,
@@ -85,21 +88,25 @@ public class UserController(ISender mediator) : MediatorControllerBase(mediator)
     }
 
     [HttpDelete("{id:guid}")]
+    [SameUserOrAdminAuthorize]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> DeleteUser(Guid id, CancellationToken cancellationToken)
     {
         var result = await Mediator.Send(new DeleteUserCommand(id), cancellationToken);
+
         return result.IsSuccess
             ? NoContent()
             : StatusCode(GetStatusCode(result.Error.Code), result.Error);
     }
 
     [HttpGet]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [Authorize(Roles = RoleTypeConstants.Admin)]
+    [ProducesResponseType(typeof(List<UserWithRolesResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> GetAll(CancellationToken cancellationToken)
     {
@@ -111,9 +118,10 @@ public class UserController(ISender mediator) : MediatorControllerBase(mediator)
     }
 
     [HttpGet("{id:guid}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [SameUserOrAdminAuthorize]
+    [ProducesResponseType(typeof(UserResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> GetById(Guid id, CancellationToken cancellationToken)
     {
@@ -125,9 +133,10 @@ public class UserController(ISender mediator) : MediatorControllerBase(mediator)
     }
 
     [HttpGet("by-email/{email}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [Authorize(Roles = RoleTypeConstants.Admin)]
+    [ProducesResponseType(typeof(UserResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> GetByEmail(string email, CancellationToken cancellationToken)
     {
@@ -139,9 +148,10 @@ public class UserController(ISender mediator) : MediatorControllerBase(mediator)
     }
 
     [HttpGet("by-username/{username}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [Authorize(Roles = RoleTypeConstants.Admin)]
+    [ProducesResponseType(typeof(UserResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> GetByUsername(
         string username,

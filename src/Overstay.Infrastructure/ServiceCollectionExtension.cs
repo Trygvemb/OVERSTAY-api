@@ -1,7 +1,7 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -70,8 +70,38 @@ public static class ServiceCollectionExtension
                         )
                     ),
                 };
+
+                options.Events = new JwtBearerEvents
+                {
+                    OnAuthenticationFailed = context =>
+                    {
+                        Console.WriteLine($"Authentication failed: {context.Exception.Message}");
+                        return Task.CompletedTask;
+                    },
+                    OnMessageReceived = context =>
+                    {
+                        Console.WriteLine(
+                            $"Token received: {context.Token?[..Math.Min(20, context.Token?.Length ?? 0)]}..."
+                        );
+                        return Task.CompletedTask;
+                    },
+                    OnTokenValidated = context =>
+                    {
+                        Console.WriteLine(
+                            $"Token validated for: {context.Principal?.Identity?.Name}"
+                        );
+                        return Task.CompletedTask;
+                    },
+                };
             });
 
+        services
+            .AddAuthorizationBuilder()
+            .AddPolicy(
+                "SameUserOrAdmin",
+                policy => policy.Requirements.Add(new SameUserOrAdminRequirement())
+            );
+        services.AddScoped<IAuthorizationHandler, SameUserOrAdminHandler>();
         services.AddScoped<IVisaTypeService, VisaTypeService>();
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IUserService, UserService>();

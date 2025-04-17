@@ -40,4 +40,10 @@ public static class UserErrors
 
     public static Error GetRolesFailed =>
         new Error(ErrorTypeConstants.Validation, "An error occurred while getting user roles.");
+
+    public static Error AccessDenied =>
+        new Error(
+            ErrorTypeConstants.Forbidden,
+            "You dont have permission to access this resource."
+        );
 }

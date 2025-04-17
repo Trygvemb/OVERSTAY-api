@@ -1,8 +1,8 @@
 using System.Text.Json.Serialization;
+using Overstay.API.Commons;
 using Overstay.Application;
 using Overstay.Application.Commons.JsonConverters;
 using Overstay.Infrastructure;
-using Overstay.Infrastructure.Data;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,18 +16,29 @@ builder
         options.JsonSerializerOptions.Converters.Add(new ResultJsonConverterFactory());
     });
 
-builder.Services.AddOpenApi();
+builder.Services.AddOpenApi(
+    "v1",
+    options =>
+    {
+        options.AddDocumentTransformer<BearerSecuritySchemeTransformer>();
+    }
+);
 
 builder.Services.AddInfrastructureLayer(builder.Configuration).AddApplicationLayer();
 
-builder.Logging.ClearProviders().AddConsole().AddDebug().SetMinimumLevel(LogLevel.Information);
+builder
+    .Logging.ClearProviders()
+    .AddConsole()
+    .AddDebug()
+    .SetMinimumLevel(LogLevel.Information)
+    .AddFilter("Microsoft.AspNetCore.Authorization", LogLevel.Debug);
 
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
     // Initialize database with seed data
-    await DatabaseInitializer.InitializeDatabaseAsync(app.Services);
+    //await DatabaseInitializer.InitializeDatabaseAsync(app.Services);
 
     app.MapOpenApi();
     app.MapScalarApiReference();
