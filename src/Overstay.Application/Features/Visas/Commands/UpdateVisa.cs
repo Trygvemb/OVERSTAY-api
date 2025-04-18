@@ -4,14 +4,14 @@ using Overstay.Application.Services;
 
 namespace Overstay.Application.Features.Visas.Commands;
 
-public sealed record UpdateVisaCommand(UpdateVisaRequest Item) : IRequest<Result>;
+public sealed record UpdateVisaCommand(Guid Id, UpdateVisaRequest Item) : IRequest<Result>;
 
 public class UpdateVisaCommandHAndler(IVisaService visaService)
     : IRequestHandler<UpdateVisaCommand, Result>
 {
     public async Task<Result> Handle(UpdateVisaCommand request, CancellationToken cancellationToken)
     {
-        var visa = request.Item.Adapt<Visa>();
+        var visa = request.Adapt<Visa>();
 
         return await visaService.UpdateAsync(visa, cancellationToken);
     }

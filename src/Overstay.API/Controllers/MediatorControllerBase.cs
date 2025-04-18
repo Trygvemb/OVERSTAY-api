@@ -1,4 +1,3 @@
-using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Overstay.Application.Commons.Constants;

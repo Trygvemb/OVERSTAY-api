@@ -1,6 +1,6 @@
-using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Overstay.Application.Commons.Constants;
 using Overstay.Application.Features.VisaTypes.Commands;
 using Overstay.Application.Features.VisaTypes.Queries;
 using Overstay.Application.Features.VisaTypes.Request;
@@ -8,10 +8,9 @@ using Overstay.Domain.Entities;
 
 namespace Overstay.API.Controllers;
 
-[AllowAnonymous]
+[Authorize(Roles = RoleTypeConstants.Admin)]
 public class VisaTypeController(ISender mediator) : MediatorControllerBase(mediator)
 {
-    //[Authorize]
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]

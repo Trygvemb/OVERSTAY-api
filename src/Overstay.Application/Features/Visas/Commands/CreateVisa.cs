@@ -6,7 +6,7 @@ namespace Overstay.Application.Features.Visas.Commands;
 
 public sealed record CreateVisaCommand(Guid UserId, CreateVisaRequest Item) : IRequest<Result>;
 
-public class CreateVisaCommandHAndler(IVisaService visaService)
+public class CreateVisaCommandHandler(IVisaService visaService)
     : IRequestHandler<CreateVisaCommand, Result>
 {
     public async Task<Result> Handle(CreateVisaCommand request, CancellationToken cancellationToken)

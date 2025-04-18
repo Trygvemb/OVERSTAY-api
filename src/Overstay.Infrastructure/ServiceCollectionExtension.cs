@@ -103,6 +103,7 @@ public static class ServiceCollectionExtension
             );
         services.AddScoped<IAuthorizationHandler, SameUserOrAdminHandler>();
         services.AddScoped<IVisaTypeService, VisaTypeService>();
+        services.AddScoped<IVisaService, VisaService>();
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IUserService, UserService>();
 

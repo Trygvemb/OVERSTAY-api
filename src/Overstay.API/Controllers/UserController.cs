@@ -1,4 +1,3 @@
-using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Overstay.Application.Commons.Constants;
@@ -26,12 +25,11 @@ public class UserController(ISender mediator) : MediatorControllerBase(mediator)
     {
         var result = await Mediator.Send(command, cancellationToken);
 
-        if (!result.IsSuccess)
-            return StatusCode(GetStatusCode(result.Error.Code), result.Error);
-
         var userId = result.GetValue<Guid>();
 
-        return CreatedAtAction(nameof(GetById), new { id = userId }, userId);
+        return result.IsSuccess
+            ? CreatedAtAction(nameof(GetById), new { id = userId }, userId)
+            : StatusCode(GetStatusCode(result.Error.Code), result.Error);
     }
 
     [HttpPost("sign-in")]
@@ -83,7 +81,7 @@ public class UserController(ISender mediator) : MediatorControllerBase(mediator)
         var result = await Mediator.Send(new UpdateUserCommand(id, request), cancellationToken);
 
         return result.IsSuccess
-            ? Ok(result)
+            ? NoContent()
             : StatusCode(GetStatusCode(result.Error.Code), result.Error);
     }
 

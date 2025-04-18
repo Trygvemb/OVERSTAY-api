@@ -16,5 +16,11 @@ public static class MappingConfigurations
             .IgnoreNullValues(true)
             .Map(dest => dest.Id, src => src.Id)
             .Map(dest => dest, src => src.Item);
+
+        TypeAdapterConfig<UpdateVisaTypeCommand, VisaType>
+            .NewConfig()
+            .IgnoreNullValues(true)
+            .Map(dest => dest.Id, src => src.Id)
+            .Map(dest => dest, src => src.Item);
     }
 }
