@@ -1,6 +1,7 @@
 using MapsterMapper;
 using Microsoft.AspNetCore.Identity;
 using Overstay.Application.Commons.Constants;
+using Overstay.Application.Commons.Errors;
 using Overstay.Application.Commons.Results;
 using Overstay.Application.Features.Users.Requests;
 using Overstay.Application.Features.Users.Responses;

@@ -14,12 +14,7 @@ public class CreateVisaTypeCommandHandler(IVisaTypeService visaTypeService)
         CancellationToken cancellationToken
     )
     {
-        var visaType = new VisaType(
-            request.Item.Name!,
-            request.Item.Description!,
-            request.Item.DurationInDays,
-            request.Item.IsMultipleEntry
-        );
+        var visaType = request.Item.Adapt<VisaType>();
 
         return await visaTypeService.CreateAsync(visaType, cancellationToken);
     }

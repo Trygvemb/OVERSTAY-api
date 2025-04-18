@@ -16,6 +16,10 @@
       <ProjectReference Include="..\Overstay.Infrastructure\Overstay.Infrastructure.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Remove="Commons\AuthHelper.cs" />
+    </ItemGroup>
+
     <PropertyGroup>
         <TargetFramework>net9.0</TargetFramework>
         <Nullable>enable</Nullable>

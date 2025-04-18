@@ -1,6 +1,8 @@
-namespace Overstay.Application.Commons.Constants;
+using Overstay.Application.Commons.Constants;
 
-public static class UserErrors
+namespace Overstay.Application.Commons.Errors;
+
+public sealed record UserErrors
 {
     public static Error NotFound(string? identifier = null) =>
         new(ErrorTypeConstants.NotFound, $"{identifier} User not found.");

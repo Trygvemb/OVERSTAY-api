@@ -1,6 +1,8 @@
-namespace Overstay.Application.Commons.Constants;
+using Overstay.Application.Commons.Constants;
 
-public static class VisaTypeErrors
+namespace Overstay.Application.Commons.Errors;
+
+public sealed record VisaTypeErrors
 {
     public static Error NotFound(Guid id) =>
         new(ErrorTypeConstants.NotFound, $"Visa type with ID {id} not found.");
