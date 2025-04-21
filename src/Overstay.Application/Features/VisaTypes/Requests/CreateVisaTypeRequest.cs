@@ -1,4 +1,4 @@
-namespace Overstay.Application.Features.VisaTypes.Request;
+namespace Overstay.Application.Features.VisaTypes.Requests;
 
 public class CreateVisaTypeRequest
 {

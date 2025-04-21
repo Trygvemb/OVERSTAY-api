@@ -1,7 +1,8 @@
-namespace Overstay.Application.Features.VisaTypes.Request;
+namespace Overstay.Application.Responses;
 
-public class UpdateVisaTypeRequest
+public class VisaTypeResponse
 {
+    public Guid Id { get; set; }
     public string? Name { get; set; }
     public string? Description { get; set; }
     public int? DurationInDays { get; set; }

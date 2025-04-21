@@ -1,9 +1,9 @@
-namespace Overstay.Application.Features.Visas.Response;
+namespace Overstay.Application.Responses;
 
 public class VisaResponse
 {
     public Guid Id { get; set; }
     public DateTime ArrivalDate { get; set; }
     public DateTime ExpireDate { get; set; }
-    public VisaType VisaType { get; set; } = null!;
+    public VisaTypeResponse VisaType { get; set; } = null!;
 }

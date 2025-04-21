@@ -1,5 +1,5 @@
 using Overstay.Application.Commons.Results;
-using Overstay.Application.Features.Users.Responses;
+using Overstay.Application.Responses;
 using Overstay.Application.Services;
 
 namespace Overstay.Application.Features.Users.Queries;

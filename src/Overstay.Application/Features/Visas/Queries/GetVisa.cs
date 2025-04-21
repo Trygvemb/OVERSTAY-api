@@ -1,10 +1,10 @@
 using Overstay.Application.Commons.Results;
-using Overstay.Application.Features.Visas.Response;
+using Overstay.Application.Responses;
 using Overstay.Application.Services;
 
 namespace Overstay.Application.Features.Visas.Queries;
 
-public sealed record GetVisaQuery(Guid Id) : IRequest<Result<Visa>>;
+public sealed record GetVisaQuery(Guid Id, Guid UserId) : IRequest<Result<Visa>>;
 
 public class GetVisaCommandHandler(IVisaService visaService)
     : IRequestHandler<GetVisaQuery, Result<Visa>>
@@ -14,7 +14,7 @@ public class GetVisaCommandHandler(IVisaService visaService)
         CancellationToken cancellationToken
     )
     {
-        var visa = await visaService.GetByIdAsync(request.Id, cancellationToken);
+        var visa = await visaService.GetByIdAsync(request.Id, request.UserId, cancellationToken);
 
         if (visa.IsFailure)
             return Result.Failure<Visa>(visa.Error);

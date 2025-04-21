@@ -1,6 +1,6 @@
 using Overstay.Application.Commons.Results;
 using Overstay.Application.Features.Users.Requests;
-using Overstay.Application.Features.Users.Responses;
+using Overstay.Application.Responses;
 
 namespace Overstay.Application.Services;
 

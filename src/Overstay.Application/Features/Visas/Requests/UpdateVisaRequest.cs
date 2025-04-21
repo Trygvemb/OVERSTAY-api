@@ -1,4 +1,4 @@
-namespace Overstay.Application.Features.Visas.Request;
+namespace Overstay.Application.Features.Visas.Requests;
 
 public class UpdateVisaRequest
 {

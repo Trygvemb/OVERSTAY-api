@@ -1,15 +1,15 @@
 using Overstay.Application.Commons.Results;
-using Overstay.Application.Features.VisaTypes.Request;
+using Overstay.Application.Features.VisaTypes.Requests;
 using Overstay.Application.Services;
 
 namespace Overstay.Application.Features.VisaTypes.Commands;
 
-public sealed record CreateVisaTypeCommand(CreateVisaTypeRequest Item) : IRequest<Result>;
+public sealed record CreateVisaTypeCommand(CreateVisaTypeRequest Item) : IRequest<Result<Guid>>;
 
 public class CreateVisaTypeCommandHandler(IVisaTypeService visaTypeService)
-    : IRequestHandler<CreateVisaTypeCommand, Result>
+    : IRequestHandler<CreateVisaTypeCommand, Result<Guid>>
 {
-    public async Task<Result> Handle(
+    public async Task<Result<Guid>> Handle(
         CreateVisaTypeCommand request,
         CancellationToken cancellationToken
     )

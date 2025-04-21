@@ -4,7 +4,7 @@ using Overstay.Application.Commons.Constants;
 using Overstay.Application.Commons.Errors;
 using Overstay.Application.Commons.Results;
 using Overstay.Application.Features.Users.Requests;
-using Overstay.Application.Features.Users.Responses;
+using Overstay.Application.Responses;
 using Overstay.Application.Services;
 using Overstay.Infrastructure.Data.DbContexts;
 using Overstay.Infrastructure.Data.Identities;

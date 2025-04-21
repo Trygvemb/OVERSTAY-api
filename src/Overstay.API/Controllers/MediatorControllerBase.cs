@@ -4,9 +4,9 @@ using Overstay.Application.Commons.Constants;
 
 namespace Overstay.API.Controllers;
 
-[Authorize]
 [ApiController]
 [Route("api/[controller]")]
+[Authorize(Roles = RoleTypeConstants.User)]
 public class MediatorControllerBase(ISender mediator) : ControllerBase
 {
     protected ISender Mediator { get; } = mediator;

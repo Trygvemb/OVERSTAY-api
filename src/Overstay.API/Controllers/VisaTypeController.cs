@@ -3,21 +3,20 @@ using Microsoft.AspNetCore.Mvc;
 using Overstay.Application.Commons.Constants;
 using Overstay.Application.Features.VisaTypes.Commands;
 using Overstay.Application.Features.VisaTypes.Queries;
-using Overstay.Application.Features.VisaTypes.Request;
+using Overstay.Application.Features.VisaTypes.Requests;
+using Overstay.Application.Responses;
 using Overstay.Domain.Entities;
 
 namespace Overstay.API.Controllers;
 
-[Authorize(Roles = RoleTypeConstants.Admin)]
 public class VisaTypeController(ISender mediator) : MediatorControllerBase(mediator)
 {
     [HttpGet]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [Authorize(Roles = RoleTypeConstants.User)]
+    [ProducesResponseType(typeof(List<VisaTypeResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<List<VisaType>>> GetVisaTypes(
-        CancellationToken cancellationToken
-    )
+    public async Task<ActionResult> GetAll(CancellationToken cancellationToken)
     {
         var result = await Mediator.Send(new GetVisaTypesQuery(), cancellationToken);
         return result.IsSuccess
@@ -26,14 +25,12 @@ public class VisaTypeController(ISender mediator) : MediatorControllerBase(media
     }
 
     [HttpGet("{id:guid}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [Authorize(Roles = RoleTypeConstants.User)]
+    [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<VisaType>> GetVisaTypeById(
-        Guid id,
-        CancellationToken cancellationToken
-    )
+    public async Task<ActionResult> GetById(Guid id, CancellationToken cancellationToken)
     {
         var result = await Mediator.Send(new GetVisaTypeQuery(id), cancellationToken);
         return result.IsSuccess
@@ -42,41 +39,48 @@ public class VisaTypeController(ISender mediator) : MediatorControllerBase(media
     }
 
     [HttpPost]
-    [ProducesResponseType(StatusCodes.Status201Created)]
+    [Authorize(Roles = RoleTypeConstants.Admin)]
+    [ProducesResponseType(typeof(VisaTypeResponse), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult> CreateVisaType(
+    public async Task<ActionResult> Create(
         CreateVisaTypeCommand command,
         CancellationToken cancellationToken
     )
     {
         var result = await Mediator.Send(command, cancellationToken);
-        return result.IsSuccess ? Ok() : StatusCode(GetStatusCode(result.Error.Code), result.Error);
+        return result.IsSuccess
+            ? CreatedAtAction(nameof(GetById), new { id = result.Value }, result.Value)
+            : StatusCode(GetStatusCode(result.Error.Code), result.Error);
     }
 
     [HttpPut("{id:guid}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [Authorize(Roles = RoleTypeConstants.Admin)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult> UpdateVisaType(
+    public async Task<ActionResult> Update(
         Guid id,
         UpdateVisaTypeRequest request,
         CancellationToken cancellationToken
     )
     {
         var result = await Mediator.Send(new UpdateVisaTypeCommand(id, request), cancellationToken);
-        return result.IsSuccess ? Ok(result) : StatusCode(GetStatusCode(result.Error.Code), result);
+        return result.IsSuccess
+            ? NoContent()
+            : StatusCode(GetStatusCode(result.Error.Code), result);
     }
 
     [HttpDelete("{id:guid}")]
+    [Authorize(Roles = RoleTypeConstants.Admin)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult> DeleteVisaType(Guid id, CancellationToken cancellationToken)
+    public async Task<ActionResult> Delete(Guid id, CancellationToken cancellationToken)
     {
         var result = await Mediator.Send(new DeleteVisaTypeCommand(id), cancellationToken);
         return result.IsSuccess

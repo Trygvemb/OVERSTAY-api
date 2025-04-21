@@ -7,12 +7,18 @@ namespace Overstay.Infrastructure.Services;
 
 public class VisaService(ApplicationDbContext context, ILogger<VisaService> logger) : IVisaService
 {
-    public async Task<Result<List<Visa>>> GetAllAsync(CancellationToken cancellationToken)
+    public async Task<Result<List<Visa>>> GetAllAsync(
+        Guid userId,
+        CancellationToken cancellationToken
+    )
     {
         try
         {
             logger.LogInformation("Retrieving all visa records");
-            var visas = await context.Visas.Include(v => v.VisaType).ToListAsync(cancellationToken);
+            var visas = await context
+                .Visas.Where(v => v.UserId == userId)
+                .Include(v => v.VisaType)
+                .ToListAsync(cancellationToken);
 
             return Result.Success(visas);
         }
@@ -23,7 +29,11 @@ public class VisaService(ApplicationDbContext context, ILogger<VisaService> logg
         }
     }
 
-    public async Task<Result<Visa>> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<Result<Visa>> GetByIdAsync(
+        Guid id,
+        Guid userId,
+        CancellationToken cancellationToken
+    )
     {
         try
         {
@@ -31,6 +41,9 @@ public class VisaService(ApplicationDbContext context, ILogger<VisaService> logg
             var visa = await context
                 .Visas.Include(v => v.VisaType)
                 .FirstOrDefaultAsync(v => v.Id == id, cancellationToken);
+
+            if (visa != null && visa.UserId != userId)
+                return Result.Failure<Visa>(UserErrors.AccessDenied);
 
             return visa is null
                 ? Result.Failure<Visa>(VisaErrors.NotFound(id))
