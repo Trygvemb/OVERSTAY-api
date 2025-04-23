@@ -20,7 +20,6 @@ public class VisaTypeConfigurations : IEntityTypeConfiguration<VisaType>
         builder.Property(v => v.UpdatedAt).ValueGeneratedOnAddOrUpdate().HasColumnName("UpdatedAt");
         builder.Property(v => v.Name).HasColumnName("Name").IsRequired().HasMaxLength(100);
         builder.Property(v => v.Description).HasColumnName("Description").HasMaxLength(500);
-        builder.Property(v => v.DurationInDays).HasColumnName("DurationInDays").IsRequired();
         builder.Property(v => v.IsMultipleEntry).HasColumnName("IsMultipleEntry").IsRequired();
     }
 }

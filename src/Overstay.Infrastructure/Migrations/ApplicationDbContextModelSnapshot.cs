@@ -1918,10 +1918,6 @@ namespace Overstay.Infrastructure.Migrations
                         .HasColumnType("nvarchar(500)")
                         .HasColumnName("Description");
 
-                    b.Property<int>("DurationInDays")
-                        .HasColumnType("int")
-                        .HasColumnName("DurationInDays");
-
                     b.Property<bool>("IsMultipleEntry")
                         .HasColumnType("bit")
                         .HasColumnName("IsMultipleEntry");
@@ -1948,7 +1944,6 @@ namespace Overstay.Infrastructure.Migrations
                             Id = new Guid("10000000-0000-0000-0000-000000000001"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "For leisure travel and tourism purposes",
-                            DurationInDays = 90,
                             IsMultipleEntry = false,
                             Name = "Test Tourist Visa",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -1958,7 +1953,6 @@ namespace Overstay.Infrastructure.Migrations
                             Id = new Guid("10000000-0000-0000-0000-000000000002"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "For business meetings and commercial activities",
-                            DurationInDays = 180,
                             IsMultipleEntry = true,
                             Name = "Test Business Visa",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -1968,7 +1962,6 @@ namespace Overstay.Infrastructure.Migrations
                             Id = new Guid("10000000-0000-0000-0000-000000000003"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "For full-time students enrolled in educational institutions",
-                            DurationInDays = 365,
                             IsMultipleEntry = true,
                             Name = "Test Student Visa",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -1978,7 +1971,6 @@ namespace Overstay.Infrastructure.Migrations
                             Id = new Guid("10000000-0000-0000-0000-000000000004"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "For employment purposes",
-                            DurationInDays = 365,
                             IsMultipleEntry = true,
                             Name = "Test Work Visa",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -1988,7 +1980,6 @@ namespace Overstay.Infrastructure.Migrations
                             Id = new Guid("10000000-0000-0000-0000-000000000005"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "For passing through a country to reach another destination",
-                            DurationInDays = 7,
                             IsMultipleEntry = false,
                             Name = "Test Transit Visa",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -1998,7 +1989,6 @@ namespace Overstay.Infrastructure.Migrations
                             Id = new Guid("10000000-0000-0000-0000-000000000006"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "For diplomatic and official government visits",
-                            DurationInDays = 180,
                             IsMultipleEntry = true,
                             Name = "Test Diplomatic Visa",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)

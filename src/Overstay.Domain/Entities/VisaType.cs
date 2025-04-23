@@ -9,24 +9,14 @@ public class VisaType : Entity
 {
     public string? Name { get; private set; }
     public string? Description { get; private set; }
-    public int DurationInDays { get; private set; }
     public bool IsMultipleEntry { get; private set; }
 
     public VisaType() { }
 
-    public VisaType(string name, string description, int durationInDays, bool isMultipleEntry)
+    public VisaType(string name, string description, bool isMultipleEntry)
     {
         Name = name;
         Description = description;
         IsMultipleEntry = isMultipleEntry;
-        SetDurationInDays(durationInDays);
-    }
-
-    private void SetDurationInDays(int durationInDays)
-    {
-        if (durationInDays < 0)
-            throw new ArgumentException("Duration cannot be negative.", nameof(durationInDays));
-
-        DurationInDays = durationInDays;
     }
 }

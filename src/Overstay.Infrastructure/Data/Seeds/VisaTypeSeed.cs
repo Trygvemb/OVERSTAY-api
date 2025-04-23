@@ -28,14 +28,13 @@ public static class VisaTypeSeed
     {
         return new[]
         {
-            new VisaType("Test Tourist Visa", "For leisure travel and tourism purposes", 90, false)
+            new VisaType("Test Tourist Visa", "For leisure travel and tourism purposes", false)
             {
                 Id = new Guid($"{VisaTypeIdPrefix}01"),
             },
             new VisaType(
                 "Test Business Visa",
                 "For business meetings and commercial activities",
-                180,
                 true
             )
             {
@@ -44,20 +43,18 @@ public static class VisaTypeSeed
             new VisaType(
                 "Test Student Visa",
                 "For full-time students enrolled in educational institutions",
-                365,
                 true
             )
             {
                 Id = new Guid($"{VisaTypeIdPrefix}03"),
             },
-            new VisaType("Test Work Visa", "For employment purposes", 365, true)
+            new VisaType("Test Work Visa", "For employment purposes", true)
             {
                 Id = new Guid($"{VisaTypeIdPrefix}04"),
             },
             new VisaType(
                 "Test Transit Visa",
                 "For passing through a country to reach another destination",
-                7,
                 false
             )
             {
@@ -66,7 +63,6 @@ public static class VisaTypeSeed
             new VisaType(
                 "Test Diplomatic Visa",
                 "For diplomatic and official government visits",
-                180,
                 true
             )
             {

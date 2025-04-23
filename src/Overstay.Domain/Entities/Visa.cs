@@ -28,7 +28,7 @@ public class Visa : Entity
             Constant.ThailandTimezoneId
         );
         ExpireDate = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(
-            expireDate ?? GetExpirationDateFromType(),
+            expireDate ?? DateTime.Now,
             Constant.ThailandTimezoneId
         );
     }
@@ -37,15 +37,5 @@ public class Visa : Entity
     {
         return ExpireDate
             < TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, Constant.ThailandTimezoneId);
-    }
-
-    public void SetExpireDateFromVisaType()
-    {
-        ExpireDate = ArrivalDate.Add(TimeSpan.FromDays(VisaType.DurationInDays));
-    }
-
-    public DateTime GetExpirationDateFromType()
-    {
-        return ArrivalDate.Add(TimeSpan.FromDays(VisaType.DurationInDays));
     }
 }
