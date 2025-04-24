@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Overstay.Application.Commons.Constants;
 using Overstay.Infrastructure.Data.DbContexts;
 using Overstay.Infrastructure.Data.Identities;
@@ -53,8 +52,6 @@ public static class DatabaseInitializer
         ApplicationDbContext context
     )
     {
-        var now = DateTime.UtcNow;
-
         if (await userManager.FindByEmailAsync("admin@example.com") is null)
         {
             var ukCountryId = new Guid("00000000-0000-0000-0000-000000000183");
