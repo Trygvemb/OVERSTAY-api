@@ -3,13 +3,13 @@ namespace Overstay.Application.Commons.Constants;
 public static class ErrorTypeConstants
 {
     public const string None = "None";
-    public const string NotFound = "NotFound";
-    public const string Validation = "Validation";
-    public const string Concurrency = "Concurrency";
-    public const string ServerError = "ServerError";
-    public const string Unauthorized = "Unauthorized";
-    public const string Forbidden = "Forbidden";
-    public const string InternalServerError = "InternalServerError";
+    public const string NotFound = "Not Found Error";
+    public const string Validation = "Validation Error";
+    public const string Concurrency = "Concurrency Error";
+    public const string Unauthorized = "Unauthorized Error";
+    public const string Forbidden = "Forbidden Error";
+    public const string InternalServerError = "Internal Server Error";
+    public const string Conflict = "Conflict Error";
 }
 
 public static class RoleTypeConstants

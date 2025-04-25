@@ -8,7 +8,7 @@ public sealed record VisaTypeErrors
         new(ErrorTypeConstants.NotFound, $"Visa type with ID {id} not found.");
 
     public static Error FailedToCreateVisaType =>
-        new Error(ErrorTypeConstants.ServerError, "Failed to create visa type.");
+        new Error(ErrorTypeConstants.InternalServerError, "Failed to create visa type.");
 
     public static Error ConcurrencyError =>
         new Error(

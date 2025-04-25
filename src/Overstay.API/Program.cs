@@ -1,6 +1,10 @@
+using System.Reflection;
+using System.Reflection.Metadata;
 using System.Text.Json.Serialization;
+using FluentValidation;
 using Overstay.API.Commons;
 using Overstay.Application;
+using Overstay.Application.Commons.Behaviors;
 using Overstay.Application.Commons.JsonConverters;
 using Overstay.Infrastructure;
 using Overstay.Infrastructure.Data;
@@ -22,7 +26,9 @@ builder.Services.AddOpenApi(
     options =>
     {
         options.AddDocumentTransformer<BearerSecuritySchemeTransformer>();
-        options.AddDocumentTransformer(new OpenApiServerTransformer(builder.Configuration, builder.Environment));
+        options.AddDocumentTransformer(
+            new OpenApiServerTransformer(builder.Configuration, builder.Environment)
+        );
     }
 );
 

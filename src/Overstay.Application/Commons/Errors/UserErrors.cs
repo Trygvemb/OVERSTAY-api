@@ -14,13 +14,13 @@ public sealed record UserErrors
         );
 
     public static Error FailedToCreateUser =>
-        new Error(ErrorTypeConstants.ServerError, "Failed to create user.");
+        new Error(ErrorTypeConstants.InternalServerError, "Failed to create user.");
 
     public static Error UserAlreadyExists =>
-        new Error(ErrorTypeConstants.Validation, "User already exists.");
+        new Error(ErrorTypeConstants.Conflict, "User already exists.");
 
     public static Error RetrievingAllUsers =>
-        new Error(ErrorTypeConstants.ServerError, "Failed to retrieve all users.");
+        new Error(ErrorTypeConstants.InternalServerError, "Failed to retrieve all users.");
 
     public static Error LockedOut =>
         new Error(ErrorTypeConstants.Unauthorized, "User account is locked out.");
@@ -29,13 +29,13 @@ public sealed record UserErrors
         new Error(ErrorTypeConstants.Unauthorized, "Invalid credentials provided.");
 
     public static Error SignInFailed =>
-        new Error(ErrorTypeConstants.ServerError, "An error occurred during sign in.");
+        new Error(ErrorTypeConstants.InternalServerError, "An error occurred during sign in.");
 
     public static Error UpdateFailed(string? message = null) =>
-        new Error(ErrorTypeConstants.ServerError, $"Failed to update user. {message}");
+        new Error(ErrorTypeConstants.InternalServerError, $"Failed to update user. {message}");
 
     public static Error DeleteFailed(string? message = null) =>
-        new Error(ErrorTypeConstants.ServerError, $"Failed to delete user. {message}");
+        new Error(ErrorTypeConstants.InternalServerError, $"Failed to delete user. {message}");
 
     public static Error RemoveRoleFailed(string? message = null) =>
         new Error(ErrorTypeConstants.Validation, $"User is not in role {message}.");
